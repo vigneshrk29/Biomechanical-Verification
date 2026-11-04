@@ -47,6 +47,7 @@ table.wrap td:first-child{white-space:nowrap}
 tr.sep td{border-top:2px solid var(--line)}
 th.grp,td.grp{border-left:2px solid var(--line)} thead th[colspan]{text-align:center}
 table.ev{font-size:.82rem} table.ev th,table.ev td{padding:6px 6px}
+.summary{background:var(--card);border-left:4px solid var(--accent);padding:10px 14px;border-radius:6px}
 .fig img{width:100%;height:auto;display:block;border-radius:6px;background:#fff}
 </style></head>
 <body><main>
@@ -201,7 +202,7 @@ table.ev{font-size:.82rem} table.ev th,table.ev td{padding:6px 6px}
 
 <h2 id="results">Results</h2>
 <h3>Gait-sequence detection</h3>
-<div class="fig"><img src="assets/gait_sequences_wearpd.png" alt="Free-walking recording: reference walking periods and the gait sequences of each detector" loading="lazy"></div><p class="cap">Example: one WearPD-Gait free-walking recording (NLS193_control_FreeWalk). Top row: the reference labels (dark: walking; light: standing or chair; blank: not scored, e.g. opening a door). Rows below: the gait sequences of each detector.</p>
+<div class="fig"><img src="assets/gait_sequences_newbee.png" alt="NEWBEE recording: reference walking and the gait sequences of each detector" loading="lazy"></div><p class="cap">Example: one NEWBEE recording (id02_courseC). Top row: the reference (the whole recording is walking). Rows below: the gait sequences of each detector.</p><div class="fig"><img src="assets/gait_sequences_wearpd.png" alt="Free-walking recording: reference walking periods and the gait sequences of each detector" loading="lazy"></div><p class="cap">Example: one WearPD-Gait free-walking recording (NLS193_control_FreeWalk). Top row: the reference labels (dark: walking; light: standing or chair; blank: not scored, e.g. opening a door). Rows below: the gait sequences of each detector.</p>
 <div class="tw"><table><thead><tr><th rowspan="2">detector</th><th>NEWBEE</th><th colspan="3" class="grp">WearPD-Gait walkway</th><th colspan="3" class="grp">WearPD-Gait free walking</th></tr><tr><th>sensitivity</th><th class="grp">sensitivity</th><th>specificity</th><th>accuracy</th><th class="grp">sensitivity</th><th>specificity</th><th>accuracy</th></tr></thead><tbody>
 <tr><td>silviaGS (pipeline default)</td><td>100%</td><td class=grp>99%</td><td>95%</td><td>98%</td><td class=grp>100%</td><td>87%</td><td>95%</td></tr>
 <tr><td>Ionescu</td><td>100%</td><td class=grp>97%</td><td>100%</td><td>98%</td><td class=grp>99%</td><td>94%</td><td>97%</td></tr>
@@ -214,8 +215,8 @@ table.ev{font-size:.82rem} table.ev th,table.ev td{padding:6px 6px}
 
 <h3>Event detection</h3>
 <div class="fig"><img src="assets/events_newbee.png" alt="Five gait cycles of NEWBEE level walking: foot and pelvis signals with the detected and the insole initial contacts and toe-offs" loading="lazy"></div><p class="cap">Example: five gait cycles of level walking from NEWBEE (trial id02_courseC). Signal: left-foot ML angular velocity. Vertical lines: insole reference for the left foot (solid IC, dashed TC). Markers: detected events, drawn on the signal — foot: Rampp on the Roth 2021 stride list; pelvis: IcdIonescu (IC) and McCamley gauss2 (TC) inside the silviaGS gait sequences. The pelvis does not say which foot an event belongs to, so only the pelvis events whose nearest reference event is a left-foot one are shown.</p>
-<p>See below for expanded set of results.</p>
 <p>Foot detectors (Rampp, Herzer, Roth) on the Roth 2021 stride list; pelvis detectors (IcdIonescu, IcdShinImproved, McCamley with the gauss1 or gauss2 wavelet and IC found at zero crossings (zc) or peaks; its TC does not depend on zc / peaks) inside the gait sequences of silviaGS. Each cell: % of reference events found (MAE in ms).</p>
+<p class="summary"><b>Snapshot.</b> In general, for initial contact (IC) Rampp (on the Roth 2021 stride list) works best, with a caveat: on stairs use either Herzer or IcdIonescu. For toe-off (TC), the Roth events work best. IcdIonescu’s performance improves when the matching window is widened from ±100 ms to ±250 ms (not shown).</p>
 <h4>NEWBEE</h4>
 <div class="tw"><table class="ev"><thead><tr><th rowspan="2">detector</th><th rowspan="2">sensor</th><th rowspan="2">event</th><th colspan="6">by activity</th><th colspan="3" class="grp">level walking, by position</th></tr><tr><th>overall</th><th>level walking</th><th>ramps</th><th>stairs up</th><th>stairs down</th><th>curbs</th><th class=grp>first/last step</th><th>turning</th><th>straight</th></tr></thead><tbody>
 <tr><td>Rampp</td><td>feet</td><td>IC</td><td>97% (30)</td><td>98% (29)</td><td>100% (29)</td><td>94% (33)</td><td>71% (37)</td><td>98% (26)</td><td class=grp>2% (18)</td><td>97% (28)</td><td>99% (29)</td></tr>
