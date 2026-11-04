@@ -45,6 +45,9 @@ thead th{font-weight:600;border-bottom:2px solid var(--line)}
 table.wrap td,table.wrap th{white-space:normal;text-align:left;vertical-align:top}
 table.wrap td:first-child{white-space:nowrap}
 tr.sep td{border-top:2px solid var(--line)}
+th.grp,td.grp{border-left:2px solid var(--line)} thead th[colspan]{text-align:center}
+table.ev{font-size:.82rem} table.ev th,table.ev td{padding:6px 6px}
+.fig img{width:100%;height:auto;display:block;border-radius:6px;background:#fff}
 </style></head>
 <body><main>
 <h1>Biomechanical Validation for Neon-IMU-Analysis</h1>
@@ -119,10 +122,6 @@ tr.sep td{border-top:2px solid var(--line)}
 <rect x="356" y="690" width="100" height="70" rx="7" class="box"/>
 <text x="406.0" y="722.0" class="t"><tspan x="406.0">Stride</tspan><tspan x="406.0" dy="16">detection</tspan></text>
 <polyline points="457,725.0 470,725.0" class="arr"/>
-<line x1="406.0" y1="760" x2="406.0" y2="774" class="vl"/>
-<rect x="356" y="774" width="100" height="38" rx="7" class="val"/>
-<text x="406.0" y="789" class="vh">validated on</text>
-<a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><text x="406.0" y="806" class="vd">WearPD-Gait</text></a>
 <rect x="472" y="690" width="100" height="70" rx="7" class="box"/>
 <text x="522.0" y="722.0" class="t"><tspan x="522.0">Gait event</tspan><tspan x="522.0" dy="16">detection</tspan></text>
 <polyline points="573,725.0 586,725.0" class="arr"/>
@@ -166,6 +165,9 @@ tr.sep td{border-top:2px solid var(--line)}
 <p class="cap">From each dataset we use the lower-back (pelvis) IMU and the two foot IMUs. Ages: NEWBEE and WearPD-Gait from their papers; WMCG from the dataset’s participant file (the paper gives 23.9 ± 2.9 years).</p>
 
 <h2 id="reference-data">Reference data</h2>
+<h3>Gait-sequence detection</h3>
+<p>WearPD-Gait <a href="#ref-wearpd">[4]</a>: the dataset’s activity labels, annotated frame by frame from synchronised video. Walking = Walk and Turn on the walkway, plus Stairs in free walking; not walking = Standing (and Chair in free walking). Frames with any other label (e.g. opening a door) or no label are not scored. NEWBEE <a href="#ref-newbee">[2]</a>: every recording is continuous walking, so the whole recording is the reference walking period.</p>
+
 <h3>Event detection</h3>
 <p>The reference events come from pressure insoles where available: NEWBEE <a href="#ref-newbee">[2]</a> and WearPD-Gait free walking <a href="#ref-wearpd">[4]</a> (insole total force &gt; 20 N). For WearPD-Gait walkway walking, the reference is the pressure walkway.</p>
 <p>For WMCG <a href="#ref-wmcg">[3]</a>, the reference is marker-based event detection from Bonci et al. <a href="#ref-bonci">[5]</a>: their variable-threshold (Ghoussayni, RWS) detector, run unchanged, with each participant’s average walking speed (mean of their normal-walking and stair-descent speeds).</p>
@@ -181,6 +183,14 @@ tr.sep td{border-top:2px solid var(--line)}
 </tbody></table></div>
 
 <h2 id="metrics">Metrics</h2>
+<h3>Gait-sequence detection</h3>
+<p>Frame by frame, against the reference walking periods:</p>
+<ul>
+<li><b>Sensitivity</b>: the percentage of reference walking time that lies inside a detected gait sequence.</li>
+<li><b>Specificity</b>: the percentage of reference not-walking time that lies outside every detected gait sequence (WearPD-Gait only; NEWBEE has no not-walking time).</li>
+<li><b>Accuracy</b>: the percentage of all scored time classified correctly (walking or not walking).</li>
+</ul>
+
 <h3>Event detection</h3>
 <ul>
 <li><b>Matching.</b> Each detected event is paired one-to-one with the nearest reference event of the same type (initial contact, IC; toe-off, TC), closest pairs first, within ±100 ms. The pelvis detectors do not say which foot an event belongs to, so all detectors are scored with both feet pooled.</li>
@@ -190,62 +200,93 @@ tr.sep td{border-top:2px solid var(--line)}
 </ul>
 
 <h2 id="results">Results</h2>
+<h3>Gait-sequence detection</h3>
+<div class="fig"><img src="assets/gait_sequences_wearpd.png" alt="Free-walking recording: reference walking periods and the gait sequences of each detector" loading="lazy"></div><p class="cap">Example: one WearPD-Gait free-walking recording (NLS193_control_FreeWalk). Top row: the reference labels (dark: walking; light: standing or chair; blank: not scored, e.g. opening a door). Rows below: the gait sequences of each detector.</p>
+<div class="tw"><table><thead><tr><th rowspan="2">detector</th><th>NEWBEE</th><th colspan="3" class="grp">WearPD-Gait walkway</th><th colspan="3" class="grp">WearPD-Gait free walking</th></tr><tr><th>sensitivity</th><th class="grp">sensitivity</th><th>specificity</th><th>accuracy</th><th class="grp">sensitivity</th><th>specificity</th><th>accuracy</th></tr></thead><tbody>
+<tr><td>silviaGS (pipeline default)</td><td>100%</td><td class=grp>99%</td><td>95%</td><td>98%</td><td class=grp>100%</td><td>87%</td><td>95%</td></tr>
+<tr><td>Ionescu</td><td>100%</td><td class=grp>97%</td><td>100%</td><td>98%</td><td class=grp>99%</td><td>94%</td><td>97%</td></tr>
+<tr><td>AdaptiveIonescu</td><td>80%</td><td class=grp>94%</td><td>100%</td><td>95%</td><td class=grp>91%</td><td>98%</td><td>94%</td></tr>
+<tr><td>Iluz</td><td>100%</td><td class=grp>100%</td><td>81%</td><td>94%</td><td class=grp>100%</td><td>89%</td><td>96%</td></tr>
+<tr><td>Ullrich_L</td><td>98%</td><td class=grp>86%</td><td>93%</td><td>82%</td><td class=grp>92%</td><td>83%</td><td>89%</td></tr>
+<tr><td>Ullrich_R</td><td>98%</td><td class=grp>88%</td><td>91%</td><td>82%</td><td class=grp>93%</td><td>87%</td><td>89%</td></tr>
+</tbody></table></div>
+<p class="cap">NEWBEE: pooled over all recordings. WearPD-Gait: median over recordings.</p>
+
 <h3>Event detection</h3>
+<div class="fig"><img src="assets/events_newbee.png" alt="Five gait cycles of NEWBEE level walking: foot and pelvis signals with the detected and the insole initial contacts and toe-offs" loading="lazy"></div><p class="cap">Example: five gait cycles of level walking from NEWBEE (trial id02_courseC). Signal: left-foot ML angular velocity. Vertical lines: insole reference for the left foot (solid IC, dashed TC). Markers: detected events, drawn on the signal — foot: Rampp on the Roth 2021 stride list; pelvis: IcdIonescu (IC) and McCamley gauss2 (TC) inside the silviaGS gait sequences. The pelvis does not say which foot an event belongs to, so only the pelvis events whose nearest reference event is a left-foot one are shown.</p>
 <p>See below for expanded set of results.</p>
-<p>Foot detectors (Rampp, Herzer, Roth) on the Roth 2021 stride list; pelvis detectors (IcdIonescu, IcdShinImproved, McCamley gauss1) inside the gait sequences of silviaGS. Each cell: % of reference events found (MAE in ms).</p>
+<p>Foot detectors (Rampp, Herzer, Roth) on the Roth 2021 stride list; pelvis detectors (IcdIonescu, IcdShinImproved, McCamley with the gauss1 or gauss2 wavelet and IC found at zero crossings (zc) or peaks; its TC does not depend on zc / peaks) inside the gait sequences of silviaGS. Each cell: % of reference events found (MAE in ms).</p>
 <h4>NEWBEE</h4>
-<div class="tw"><table><thead><tr><th>detector</th><th>sensor</th><th>event</th><th>overall</th><th>level walking</th><th>ramps</th><th>stairs</th><th>curbs</th></tr></thead><tbody>
-<tr><td>Rampp</td><td>feet</td><td>IC</td><td>97% (30)</td><td>98% (29)</td><td>100% (29)</td><td>84% (34)</td><td>98% (26)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>IC</td><td>94% (39)</td><td>93% (40)</td><td>95% (39)</td><td>93% (36)</td><td>95% (38)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>IC</td><td>37% (59)</td><td>35% (60)</td><td>33% (62)</td><td>53% (54)</td><td>46% (54)</td></tr>
-<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>86% (49)</td><td>88% (51)</td><td>88% (45)</td><td>73% (49)</td><td>89% (54)</td></tr>
-<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>78% (54)</td><td>80% (57)</td><td>82% (50)</td><td>57% (51)</td><td>72% (57)</td></tr>
-<tr><td>McCamley gauss1</td><td>pelvis</td><td>IC</td><td>70% (60)</td><td>69% (65)</td><td>73% (56)</td><td>67% (50)</td><td>67% (63)</td></tr>
-<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>94% (34)</td><td>96% (33)</td><td>97% (34)</td><td>80% (40)</td><td>96% (30)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>TC</td><td>90% (50)</td><td>90% (50)</td><td>90% (49)</td><td>89% (47)</td><td>92% (51)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>TC</td><td>91% (45)</td><td>91% (45)</td><td>92% (44)</td><td>89% (48)</td><td>92% (49)</td></tr>
-<tr><td>McCamley gauss1</td><td>pelvis</td><td>TC</td><td>7% (77)</td><td>3% (86)</td><td>10% (83)</td><td>16% (61)</td><td>4% (82)</td></tr>
+<div class="tw"><table class="ev"><thead><tr><th rowspan="2">detector</th><th rowspan="2">sensor</th><th rowspan="2">event</th><th colspan="6">by activity</th><th colspan="3" class="grp">level walking, by position</th></tr><tr><th>overall</th><th>level walking</th><th>ramps</th><th>stairs up</th><th>stairs down</th><th>curbs</th><th class=grp>first/last step</th><th>turning</th><th>straight</th></tr></thead><tbody>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>97% (30)</td><td>98% (29)</td><td>100% (29)</td><td>94% (33)</td><td>71% (37)</td><td>98% (26)</td><td class=grp>2% (18)</td><td>97% (28)</td><td>99% (29)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>94% (39)</td><td>93% (40)</td><td>95% (39)</td><td>94% (34)</td><td>92% (39)</td><td>95% (38)</td><td class=grp>2% (20)</td><td>93% (40)</td><td>94% (40)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>37% (59)</td><td>35% (60)</td><td>33% (62)</td><td>48% (53)</td><td>60% (55)</td><td>46% (54)</td><td class=grp>0%</td><td>36% (59)</td><td>35% (60)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>86% (49)</td><td>88% (51)</td><td>88% (45)</td><td>69% (53)</td><td>78% (43)</td><td>89% (54)</td><td class=grp>23% (37)</td><td>87% (51)</td><td>89% (51)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>78% (54)</td><td>80% (57)</td><td>82% (50)</td><td>56% (56)</td><td>59% (45)</td><td>72% (57)</td><td class=grp>34% (45)</td><td>77% (56)</td><td>81% (57)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>70% (60)</td><td>69% (65)</td><td>73% (56)</td><td>55% (57)</td><td>83% (44)</td><td>67% (63)</td><td class=grp>20% (61)</td><td>68% (64)</td><td>70% (65)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>4% (58)</td><td>1% (75)</td><td>2% (91)</td><td>13% (51)</td><td>47% (53)</td><td>2% (85)</td><td class=grp>2% (72)</td><td>2% (69)</td><td>0% (83)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>6% (82)</td><td>5% (83)</td><td>5% (86)</td><td>18% (76)</td><td>12% (80)</td><td>3% (79)</td><td class=grp>0% (20)</td><td>5% (76)</td><td>5% (85)</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>94% (34)</td><td>96% (33)</td><td>97% (34)</td><td>82% (46)</td><td>76% (31)</td><td>96% (30)</td><td class=grp>0%</td><td>95% (32)</td><td>96% (33)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>90% (50)</td><td>90% (50)</td><td>90% (49)</td><td>90% (49)</td><td>88% (45)</td><td>92% (51)</td><td class=grp>0%</td><td>90% (50)</td><td>91% (51)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>91% (45)</td><td>91% (45)</td><td>92% (44)</td><td>90% (48)</td><td>87% (47)</td><td>92% (49)</td><td class=grp>0%</td><td>91% (46)</td><td>92% (45)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>7% (77)</td><td>3% (86)</td><td>10% (83)</td><td>6% (70)</td><td>30% (58)</td><td>4% (82)</td><td class=grp>0% (100)</td><td>4% (84)</td><td>3% (86)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>66% (58)</td><td>71% (60)</td><td>63% (57)</td><td>74% (47)</td><td>33% (67)</td><td>62% (66)</td><td class=grp>41% (53)</td><td>65% (61)</td><td>72% (60)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>66% (58)</td><td>71% (60)</td><td>63% (57)</td><td>74% (47)</td><td>33% (67)</td><td>62% (66)</td><td class=grp>41% (53)</td><td>65% (61)</td><td>72% (60)</td></tr>
 </tbody></table></div>
 <h4>WMCG</h4>
-<div class="tw"><table><thead><tr><th>detector</th><th>sensor</th><th>event</th><th>overall</th><th>level walking</th><th>stairs</th></tr></thead><tbody>
-<tr><td>Rampp</td><td>feet</td><td>IC</td><td>70% (38)</td><td>83% (28)</td><td>51% (61)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>IC</td><td>77% (22)</td><td>81% (15)</td><td>70% (35)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>IC</td><td>11% (36)</td><td>9% (41)</td><td>14% (31)</td></tr>
-<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>84% (44)</td><td>88% (47)</td><td>78% (39)</td></tr>
-<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>75% (50)</td><td>75% (55)</td><td>74% (42)</td></tr>
-<tr><td>McCamley gauss1</td><td>pelvis</td><td>IC</td><td>76% (50)</td><td>80% (60)</td><td>71% (33)</td></tr>
-<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>60% (34)</td><td>79% (32)</td><td>33% (41)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>TC</td><td>69% (47)</td><td>79% (52)</td><td>54% (37)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>TC</td><td>71% (42)</td><td>80% (45)</td><td>59% (38)</td></tr>
-<tr><td>McCamley gauss1</td><td>pelvis</td><td>TC</td><td>3% (77)</td><td>3% (72)</td><td>4% (82)</td></tr>
+<div class="tw"><table class="ev"><thead><tr><th rowspan="2">detector</th><th rowspan="2">sensor</th><th rowspan="2">event</th><th colspan="5">by activity</th><th colspan="3" class="grp">level walking, by position</th></tr><tr><th>overall</th><th>level walking</th><th>stairs up</th><th>stairs down</th><th>stair trials, level parts</th><th class=grp>first/last step</th><th>turning</th><th>straight</th></tr></thead><tbody>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>70% (38)</td><td>83% (28)</td><td>75% (67)</td><td>30% (61)</td><td>48% (55)</td><td class=grp>8% (23)</td><td>90% (32)</td><td>100% (21)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>77% (22)</td><td>81% (15)</td><td>84% (40)</td><td>78% (29)</td><td>53% (35)</td><td class=grp>8% (13)</td><td>88% (16)</td><td>99% (12)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>11% (36)</td><td>9% (41)</td><td>15% (28)</td><td>17% (31)</td><td>11% (35)</td><td class=grp>2% (50)</td><td>11% (39)</td><td>6% (48)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>84% (44)</td><td>88% (47)</td><td>95% (38)</td><td>96% (31)</td><td>52% (51)</td><td class=grp>85% (41)</td><td>86% (47)</td><td>95% (47)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>75% (50)</td><td>75% (55)</td><td>89% (52)</td><td>95% (28)</td><td>46% (49)</td><td class=grp>69% (54)</td><td>73% (54)</td><td>82% (57)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>76% (50)</td><td>80% (60)</td><td>90% (38)</td><td>97% (24)</td><td>35% (41)</td><td class=grp>78% (57)</td><td>77% (60)</td><td>89% (63)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>11% (54)</td><td>6% (55)</td><td>2% (70)</td><td>6% (75)</td><td>40% (50)</td><td class=grp>2% (65)</td><td>10% (55)</td><td>0%</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>2% (66)</td><td>2% (62)</td><td>0%</td><td>1% (95)</td><td>7% (67)</td><td class=grp>0%</td><td>3% (62)</td><td>0%</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>60% (34)</td><td>79% (32)</td><td>13% (44)</td><td>47% (49)</td><td>37% (32)</td><td class=grp>2% (30)</td><td>87% (34)</td><td>96% (27)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>69% (47)</td><td>79% (52)</td><td>87% (49)</td><td>49% (18)</td><td>34% (37)</td><td class=grp>1% (60)</td><td>89% (50)</td><td>94% (56)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>71% (42)</td><td>80% (45)</td><td>88% (54)</td><td>53% (15)</td><td>42% (34)</td><td class=grp>2% (30)</td><td>89% (44)</td><td>92% (47)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>3% (77)</td><td>3% (72)</td><td>0% (60)</td><td>9% (85)</td><td>1% (73)</td><td class=grp>6% (77)</td><td>3% (68)</td><td>2% (82)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>57% (47)</td><td>68% (50)</td><td>96% (29)</td><td>28% (63)</td><td>8% (48)</td><td class=grp>56% (49)</td><td>67% (49)</td><td>78% (52)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>57% (47)</td><td>68% (50)</td><td>96% (29)</td><td>28% (63)</td><td>8% (48)</td><td class=grp>56% (49)</td><td>67% (49)</td><td>78% (52)</td></tr>
 </tbody></table></div>
 <h4>WearPD-Gait: walkway</h4>
-<div class="tw"><table><thead><tr><th>detector</th><th>sensor</th><th>event</th><th>overall</th><th>walking</th><th>turns</th></tr></thead><tbody>
-<tr><td>Rampp</td><td>feet</td><td>IC</td><td>81% (39)</td><td>85% (37)</td><td>73% (43)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>IC</td><td>78% (20)</td><td>80% (19)</td><td>73% (22)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>IC</td><td>29% (35)</td><td>31% (35)</td><td>26% (33)</td></tr>
-<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>78% (38)</td><td>89% (35)</td><td>55% (47)</td></tr>
-<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>69% (41)</td><td>80% (39)</td><td>48% (49)</td></tr>
-<tr><td>McCamley gauss1</td><td>pelvis</td><td>IC</td><td>77% (41)</td><td>86% (39)</td><td>60% (46)</td></tr>
-<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>80% (12)</td><td>85% (10)</td><td>71% (18)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>TC</td><td>78% (63)</td><td>84% (62)</td><td>67% (65)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>TC</td><td>80% (60)</td><td>85% (59)</td><td>71% (64)</td></tr>
-<tr><td>McCamley gauss1</td><td>pelvis</td><td>TC</td><td>9% (64)</td><td>6% (65)</td><td>13% (64)</td></tr>
+<div class="tw"><table class="ev"><thead><tr><th rowspan="2">detector</th><th rowspan="2">sensor</th><th rowspan="2">event</th><th colspan="3">by activity</th><th colspan="2" class="grp">level walking, by position</th></tr><tr><th>overall</th><th>walking</th><th>turns</th><th class=grp>first/last step</th><th>straight</th></tr></thead><tbody>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>81% (39)</td><td>85% (37)</td><td>73% (43)</td><td class=grp>78% (35)</td><td>98% (40)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>78% (20)</td><td>80% (19)</td><td>73% (22)</td><td class=grp>74% (18)</td><td>92% (21)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>29% (35)</td><td>31% (35)</td><td>26% (33)</td><td class=grp>31% (36)</td><td>31% (35)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>78% (38)</td><td>89% (35)</td><td>55% (47)</td><td class=grp>89% (35)</td><td>87% (34)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>69% (41)</td><td>80% (39)</td><td>48% (49)</td><td class=grp>77% (40)</td><td>86% (35)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>77% (41)</td><td>86% (39)</td><td>60% (46)</td><td class=grp>83% (40)</td><td>92% (37)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>30% (58)</td><td>22% (63)</td><td>49% (54)</td><td class=grp>18% (67)</td><td>29% (59)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>7% (62)</td><td>3% (73)</td><td>16% (59)</td><td class=grp>2% (70)</td><td>5% (75)</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>80% (12)</td><td>85% (10)</td><td>71% (18)</td><td class=grp>79% (10)</td><td>99% (10)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>78% (63)</td><td>84% (62)</td><td>67% (65)</td><td class=grp>78% (61)</td><td>96% (63)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>80% (60)</td><td>85% (59)</td><td>71% (64)</td><td class=grp>80% (58)</td><td>96% (60)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>9% (64)</td><td>6% (65)</td><td>13% (64)</td><td class=grp>6% (70)</td><td>7% (57)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>60% (59)</td><td>71% (58)</td><td>41% (59)</td><td class=grp>69% (58)</td><td>74% (59)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>60% (59)</td><td>71% (58)</td><td>41% (59)</td><td class=grp>69% (58)</td><td>74% (59)</td></tr>
 </tbody></table></div>
 <h4>WearPD-Gait: free walking</h4>
-<div class="tw"><table><thead><tr><th>detector</th><th>sensor</th><th>event</th><th>overall</th><th>walking</th><th>turns</th><th>stairs</th></tr></thead><tbody>
-<tr><td>Rampp</td><td>feet</td><td>IC</td><td>90% (32)</td><td>92% (32)</td><td>74% (38)</td><td>65% (41)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>IC</td><td>89% (27)</td><td>90% (27)</td><td>81% (34)</td><td>82% (29)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>IC</td><td>25% (46)</td><td>25% (46)</td><td>32% (42)</td><td>29% (47)</td></tr>
-<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>86% (36)</td><td>87% (36)</td><td>66% (44)</td><td>75% (45)</td></tr>
-<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>85% (40)</td><td>86% (39)</td><td>55% (50)</td><td>69% (45)</td></tr>
-<tr><td>McCamley gauss1</td><td>pelvis</td><td>IC</td><td>86% (44)</td><td>87% (44)</td><td>63% (39)</td><td>71% (43)</td></tr>
-<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>83% (34)</td><td>85% (34)</td><td>68% (36)</td><td>56% (38)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>TC</td><td>59% (61)</td><td>59% (61)</td><td>52% (60)</td><td>48% (57)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>TC</td><td>64% (59)</td><td>65% (59)</td><td>56% (61)</td><td>51% (63)</td></tr>
-<tr><td>McCamley gauss1</td><td>pelvis</td><td>TC</td><td>4% (60)</td><td>4% (61)</td><td>5% (70)</td><td>8% (53)</td></tr>
+<div class="tw"><table class="ev"><thead><tr><th rowspan="2">detector</th><th rowspan="2">sensor</th><th rowspan="2">event</th><th colspan="5">by activity</th><th colspan="2" class="grp">level walking, by position</th></tr><tr><th>overall</th><th>walking</th><th>turns</th><th>stairs up</th><th>stairs down</th><th class=grp>first/last step</th><th>straight</th></tr></thead><tbody>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>90% (32)</td><td>92% (32)</td><td>74% (38)</td><td>64% (37)</td><td>65% (44)</td><td class=grp>77% (31)</td><td>94% (32)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>89% (27)</td><td>90% (27)</td><td>81% (34)</td><td>79% (30)</td><td>85% (28)</td><td class=grp>70% (28)</td><td>93% (27)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>25% (46)</td><td>25% (46)</td><td>32% (42)</td><td>27% (51)</td><td>31% (44)</td><td class=grp>25% (46)</td><td>25% (46)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>86% (36)</td><td>87% (36)</td><td>66% (44)</td><td>77% (45)</td><td>74% (45)</td><td class=grp>80% (40)</td><td>88% (35)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>85% (40)</td><td>86% (39)</td><td>55% (50)</td><td>67% (46)</td><td>71% (44)</td><td class=grp>72% (45)</td><td>88% (39)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>86% (44)</td><td>87% (44)</td><td>63% (39)</td><td>66% (44)</td><td>75% (43)</td><td class=grp>77% (47)</td><td>89% (44)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>17% (59)</td><td>17% (60)</td><td>31% (55)</td><td>18% (57)</td><td>19% (55)</td><td class=grp>18% (64)</td><td>17% (59)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>4% (62)</td><td>3% (60)</td><td>12% (67)</td><td>5% (73)</td><td>7% (72)</td><td class=grp>4% (62)</td><td>3% (60)</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>83% (34)</td><td>85% (34)</td><td>68% (36)</td><td>59% (37)</td><td>52% (39)</td><td class=grp>71% (34)</td><td>87% (34)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>59% (61)</td><td>59% (61)</td><td>52% (60)</td><td>45% (60)</td><td>51% (54)</td><td class=grp>45% (60)</td><td>62% (61)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>64% (59)</td><td>65% (59)</td><td>56% (61)</td><td>48% (65)</td><td>54% (61)</td><td class=grp>54% (58)</td><td>66% (59)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>4% (60)</td><td>4% (61)</td><td>5% (70)</td><td>6% (37)</td><td>10% (64)</td><td class=grp>4% (57)</td><td>3% (62)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>72% (49)</td><td>74% (49)</td><td>42% (45)</td><td>66% (50)</td><td>62% (53)</td><td class=grp>60% (46)</td><td>75% (49)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>72% (49)</td><td>74% (49)</td><td>42% (45)</td><td>66% (50)</td><td>62% (53)</td><td class=grp>60% (46)</td><td>75% (49)</td></tr>
 </tbody></table></div>
-<p class="cap">Overall = all reference events of the activities shown (WearPD-Gait: standing and chair transfers not included). NEWBEE ramps, stairs and curbs pool up and down; WMCG level walking pools the three speeds.</p>
+<p class="cap">Overall = all reference events of the activities shown (WearPD-Gait: standing and chair transfers not included). NEWBEE ramps and curbs pool up and down; WMCG level walking pools the three speeds.</p>
+<p class="cap"><b>Stairs up / down.</b> NEWBEE: its walk_mode labels. WMCG: the OpenSim centre of mass rising or falling faster than 0.1 m/s over ±0.5 s around the event (slower = level parts of the stair trials, e.g. landings). WearPD-Gait: each Stairs label covers one ascent and one descent of the same small staircase (dataset supplement, Table S3), so its events before the middle reference IC are up and the rest down.</p>
+<p class="cap"><b>Level walking by position.</b> First/last step: the first and last event of each foot in a walking bout (NEWBEE and WMCG: the trial, i.e. starting and stopping; WearPD-Gait: each Walk label, i.e. the steps next to a turn or a stop). Turning (NEWBEE and WMCG): NEWBEE’s curve and turn-around labels; for WMCG the OpenSim centre-of-mass heading changing faster than 30°/s within ±0.3 s of the event, or the centre of mass slower than 0.3 m/s (turn-around). In WearPD-Gait turns are labelled separately (the turns column). Straight: all other level-walking events.</p>
 
 <h2 id="references">References</h2>
 <ol class="refs"><li value="1" id="ref-wgl">Castellaz, Wouda &amp; van Beijnum. <a href="https://doi.org/10.1109/TNSRE.2025.3622734">Estimating 3D Ground Reaction Forces During Daily Activities: A Reduced Sensor Setup and Virtual Pivot Point Approach</a>. <i>IEEE Transactions on Neural Systems and Rehabilitation Engineering 33 (2025)</i>.</li><li value="2" id="ref-newbee">Losing &amp; Hasenjäger. <a href="https://www.nature.com/articles/s41597-022-01580-3">A Multi-Modal Gait Database of Natural Everyday-Walk in an Urban Environment</a>. <i>Scientific Data 9, 473 (2022)</i>.</li><li value="3" id="ref-wmcg">Hossain et al. <a href="https://www.nature.com/articles/s41597-026-07657-7">A Wearable Motion Capture Dataset for Gait Analysis Using IMUs and Shank-Mounted Egocentric Cameras</a>. <i>Scientific Data 13, 1477 (2026)</i>.</li><li value="4" id="ref-wearpd">Anderson et al. <a href="https://www.nature.com/articles/s41597-026-06806-2">WearGait-PD: An Open-Access Wearables Dataset for Gait in Parkinson’s Disease and Age-Matched Controls</a>. <i>Scientific Data 13, 440 (2026)</i>.</li><li value="5" id="ref-bonci">Bonci et al. <a href="https://www.frontiersin.org/journals/bioengineering-and-biotechnology/articles/10.3389/fbioe.2022.868928/full">An Algorithm for Accurate Marker-Based Gait Event Detection in Healthy and Pathological Populations During Complex Motor Tasks</a>. <i>Frontiers in Bioengineering and Biotechnology 10, 868928 (2022)</i>.</li><li value="6" id="ref-baetens">Baetens, Turcksin, Loccufier, Chevalier &amp; Verstraten. <a href="https://plus.figshare.com/articles/dataset/Kinematic_kinetic_EMG_and_pressure_data_for_daily_life_locomotion_activities/30294658?file=67423086">Kinematic, kinetic, EMG and pressure data for daily life locomotion activities</a>. <i>Figshare+ (2026), dataset</i>.</li></ol>
