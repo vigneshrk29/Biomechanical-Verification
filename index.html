@@ -35,12 +35,22 @@ svg .off{opacity:.3}
 .legend{font-size:.88rem;color:var(--muted)}
 .authors{font-size:1.02rem;margin:0 0 6px} .aff{color:var(--muted)}
 ol.refs li{margin:4px 0}
+h3{font-size:1.05rem;margin:28px 0 8px} h4{font-size:.98rem;margin:22px 0 4px}
+.cap{color:var(--muted);font-size:.88rem;margin:6px 0 0}
+.tw{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-weight:600;border-bottom:2px solid var(--line)}
+table.wrap td,table.wrap th{white-space:normal;text-align:left;vertical-align:top}
+table.wrap td:first-child{white-space:nowrap}
+tr.sep td{border-top:2px solid var(--line)}
 </style></head>
 <body><main>
 <h1>Biomechanical Validation for Neon-IMU-Analysis</h1>
 <p class="authors">Vignesh Radhakrishnan and Mark Hollands<br><span class="aff">School of Sport &amp; Exercise Sciences, Liverpool John Moores University, UK</span></p>
 <p class="lead">This page shows the validation of our biomechanical pipeline which integrates different biomechanical principles.</p>
-<nav><a href="#pipeline">Pipeline</a><a href="#references">References</a></nav>
+<nav><a href="#pipeline">Pipeline</a><a href="#datasets">Datasets</a><a href="#reference-data">Reference data</a><a href="#metrics">Metrics</a><a href="#results">Results</a><a href="#references">References</a></nav>
 
 <h2 id="pipeline">Pipeline</h2>
 <div class="fig"><svg viewBox="0 0 1000 910" role="img" aria-label="Proposed pipeline: Pupil Labs Neon glasses and three IMUs (pelvis, left and right foot) into calibration (based on the WGL CMP calibration) and time synchronisation. The Neon data go to the Pupil Labs analysis, giving eye and pupillometric metrics; the IMU data go through gait-sequence detection, stride detection, gait event detection, ZUPT and WGL CMP to biomechanical metrics (spatiotemporal, stability, nonlinear). Validation: the datasets each step is checked on; the eye-tracking branch is not validated here.">
@@ -147,7 +157,97 @@ ol.refs li{margin:4px 0}
 </svg></div>
 <p class="legend">Pupil Labs Neon glasses and three IMUs (pelvis, left and right foot) are calibrated and time-synchronised. The Neon data go to the Pupil Labs analysis; the IMU data go through gait-sequence, stride and gait-event detection, zero-velocity updates (ZUPT) and WGL CMP to the biomechanical metrics. In the validation the eye-tracking branch is greyed out (not validated here); the red boxes give the datasets each step is checked on.</p>
 
+<h2 id="datasets">Datasets</h2>
+<div class="tw"><table class="wrap"><thead><tr><th>dataset</th><th>sensors</th><th>participants</th><th>activities used</th><th>event reference</th></tr></thead><tbody>
+<tr><td><b>NEWBEE</b> <a href="#ref-newbee">[2]</a></td><td>Xsens full-body suit (17 IMUs) and pressure insoles</td><td>20 healthy adults, 18–69 years</td><td>3 outdoor courses in an urban environment with different paths: level walking, curbs, ramps and stairs (60 trials)</td><td>insoles</td></tr>
+<tr><td><b>WMCG</b> <a href="#ref-wmcg">[3]</a></td><td>IMUs and optical motion capture</td><td>10 healthy adults, 21–29 years</td><td>level walking (slow, normal, fast) and stair walking (50 trials)</td><td>markers (Bonci et al.)</td></tr>
+<tr><td><b>WearPD-Gait</b> <a href="#ref-wearpd">[4]</a></td><td>IMUs (13 Xsens) and pressure insoles; pressure walkway</td><td>older adults: Parkinson’s disease 67 ± 8 years, controls 74 ± 9 years (mean ± SD); walkway 99 participants with PD, free walking 55 (2 controls)</td><td>level walking on the pressure walkway (self-paced and hurried; 196 recordings) and free walking including stairs (55 recordings)</td><td>walkway (walkway walking), insoles (free walking)</td></tr>
+</tbody></table></div>
+<p class="cap">From each dataset we use the lower-back (pelvis) IMU and the two foot IMUs. Ages: NEWBEE and WearPD-Gait from their papers; WMCG from the dataset’s participant file (the paper gives 23.9 ± 2.9 years).</p>
+
+<h2 id="reference-data">Reference data</h2>
+<h3>Event detection</h3>
+<p>The reference events come from pressure insoles where available: NEWBEE <a href="#ref-newbee">[2]</a> and WearPD-Gait free walking <a href="#ref-wearpd">[4]</a> (insole total force &gt; 20 N). For WearPD-Gait walkway walking, the reference is the pressure walkway.</p>
+<p>For WMCG <a href="#ref-wmcg">[3]</a>, the reference is marker-based event detection from Bonci et al. <a href="#ref-bonci">[5]</a>: their variable-threshold (Ghoussayni, RWS) detector, run unchanged, with each participant’s average walking speed (mean of their normal-walking and stair-descent speeds).</p>
+<p>We validated this marker-based detection on the dataset of Baetens et al. <a href="#ref-baetens">[6]</a> (20 participants; level walking at three speeds, and stair ascent and descent step-over-step and step-by-step) against its Moticon insoles (total force &gt; 20 N; events matched within ±250 ms). It found 80–98% of the insole events, with a mean absolute timing error of 23–63 ms for initial contacts (IC) and 34–73 ms for final contacts (FC):</p>
+<div class="tw"><table><thead><tr><th>activity</th><th>IC events</th><th>IC found</th><th>IC MAE (ms)</th><th>FC events</th><th>FC found</th><th>FC MAE (ms)</th></tr></thead><tbody>
+<tr><td>Slow walking</td><td>1197</td><td>95%</td><td>42</td><td>1194</td><td>92%</td><td>44</td></tr>
+<tr><td>Normal walking</td><td>1087</td><td>98%</td><td>23</td><td>1090</td><td>96%</td><td>60</td></tr>
+<tr><td>Fast walking</td><td>1068</td><td>89%</td><td>24</td><td>1067</td><td>88%</td><td>73</td></tr>
+<tr><td>Stair ascent (step-over-step)</td><td>1518</td><td>96%</td><td>49</td><td>1515</td><td>95%</td><td>38</td></tr>
+<tr><td>Stair descent (step-over-step)</td><td>1511</td><td>96%</td><td>31</td><td>1513</td><td>96%</td><td>53</td></tr>
+<tr><td>Stair ascent (step-by-step)</td><td>2517</td><td>97%</td><td>60</td><td>2517</td><td>97%</td><td>34</td></tr>
+<tr><td>Stair descent (step-by-step)</td><td>2493</td><td>80%</td><td>63</td><td>2493</td><td>95%</td><td>44</td></tr>
+</tbody></table></div>
+
+<h2 id="metrics">Metrics</h2>
+<h3>Event detection</h3>
+<ul>
+<li><b>Matching.</b> Each detected event is paired one-to-one with the nearest reference event of the same type (initial contact, IC; toe-off, TC), closest pairs first, within ±100 ms. The pelvis detectors do not say which foot an event belongs to, so all detectors are scored with both feet pooled.</li>
+<li><b>TP</b> (true positive): a detected event paired with a reference event. <b>FP</b> (false positive): a detected event with no reference event within ±100 ms. <b>FN</b> (false negative): a reference event with no detected event.</li>
+<li><b>Found</b> (recall): TP / (TP + FN), the percentage of reference events that were detected.</li>
+<li><b>MAE</b>: mean absolute timing error (IMU − reference) over the TPs, in ms.</li>
+</ul>
+
+<h2 id="results">Results</h2>
+<h3>Event detection</h3>
+<p>See below for expanded set of results.</p>
+<p>Foot detectors (Rampp, Herzer, Roth) on the Roth 2021 stride list; pelvis detectors (IcdIonescu, IcdShinImproved, McCamley gauss1) inside the gait sequences of silviaGS. Each cell: % of reference events found (MAE in ms).</p>
+<h4>NEWBEE</h4>
+<div class="tw"><table><thead><tr><th>detector</th><th>sensor</th><th>event</th><th>overall</th><th>level walking</th><th>ramps</th><th>stairs</th><th>curbs</th></tr></thead><tbody>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>97% (30)</td><td>98% (29)</td><td>100% (29)</td><td>84% (34)</td><td>98% (26)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>94% (39)</td><td>93% (40)</td><td>95% (39)</td><td>93% (36)</td><td>95% (38)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>37% (59)</td><td>35% (60)</td><td>33% (62)</td><td>53% (54)</td><td>46% (54)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>86% (49)</td><td>88% (51)</td><td>88% (45)</td><td>73% (49)</td><td>89% (54)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>78% (54)</td><td>80% (57)</td><td>82% (50)</td><td>57% (51)</td><td>72% (57)</td></tr>
+<tr><td>McCamley gauss1</td><td>pelvis</td><td>IC</td><td>70% (60)</td><td>69% (65)</td><td>73% (56)</td><td>67% (50)</td><td>67% (63)</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>94% (34)</td><td>96% (33)</td><td>97% (34)</td><td>80% (40)</td><td>96% (30)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>90% (50)</td><td>90% (50)</td><td>90% (49)</td><td>89% (47)</td><td>92% (51)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>91% (45)</td><td>91% (45)</td><td>92% (44)</td><td>89% (48)</td><td>92% (49)</td></tr>
+<tr><td>McCamley gauss1</td><td>pelvis</td><td>TC</td><td>7% (77)</td><td>3% (86)</td><td>10% (83)</td><td>16% (61)</td><td>4% (82)</td></tr>
+</tbody></table></div>
+<h4>WMCG</h4>
+<div class="tw"><table><thead><tr><th>detector</th><th>sensor</th><th>event</th><th>overall</th><th>level walking</th><th>stairs</th></tr></thead><tbody>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>70% (38)</td><td>83% (28)</td><td>51% (61)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>77% (22)</td><td>81% (15)</td><td>70% (35)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>11% (36)</td><td>9% (41)</td><td>14% (31)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>84% (44)</td><td>88% (47)</td><td>78% (39)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>75% (50)</td><td>75% (55)</td><td>74% (42)</td></tr>
+<tr><td>McCamley gauss1</td><td>pelvis</td><td>IC</td><td>76% (50)</td><td>80% (60)</td><td>71% (33)</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>60% (34)</td><td>79% (32)</td><td>33% (41)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>69% (47)</td><td>79% (52)</td><td>54% (37)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>71% (42)</td><td>80% (45)</td><td>59% (38)</td></tr>
+<tr><td>McCamley gauss1</td><td>pelvis</td><td>TC</td><td>3% (77)</td><td>3% (72)</td><td>4% (82)</td></tr>
+</tbody></table></div>
+<h4>WearPD-Gait: walkway</h4>
+<div class="tw"><table><thead><tr><th>detector</th><th>sensor</th><th>event</th><th>overall</th><th>walking</th><th>turns</th></tr></thead><tbody>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>81% (39)</td><td>85% (37)</td><td>73% (43)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>78% (20)</td><td>80% (19)</td><td>73% (22)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>29% (35)</td><td>31% (35)</td><td>26% (33)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>78% (38)</td><td>89% (35)</td><td>55% (47)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>69% (41)</td><td>80% (39)</td><td>48% (49)</td></tr>
+<tr><td>McCamley gauss1</td><td>pelvis</td><td>IC</td><td>77% (41)</td><td>86% (39)</td><td>60% (46)</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>80% (12)</td><td>85% (10)</td><td>71% (18)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>78% (63)</td><td>84% (62)</td><td>67% (65)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>80% (60)</td><td>85% (59)</td><td>71% (64)</td></tr>
+<tr><td>McCamley gauss1</td><td>pelvis</td><td>TC</td><td>9% (64)</td><td>6% (65)</td><td>13% (64)</td></tr>
+</tbody></table></div>
+<h4>WearPD-Gait: free walking</h4>
+<div class="tw"><table><thead><tr><th>detector</th><th>sensor</th><th>event</th><th>overall</th><th>walking</th><th>turns</th><th>stairs</th></tr></thead><tbody>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>90% (32)</td><td>92% (32)</td><td>74% (38)</td><td>65% (41)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>89% (27)</td><td>90% (27)</td><td>81% (34)</td><td>82% (29)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>25% (46)</td><td>25% (46)</td><td>32% (42)</td><td>29% (47)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>86% (36)</td><td>87% (36)</td><td>66% (44)</td><td>75% (45)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>85% (40)</td><td>86% (39)</td><td>55% (50)</td><td>69% (45)</td></tr>
+<tr><td>McCamley gauss1</td><td>pelvis</td><td>IC</td><td>86% (44)</td><td>87% (44)</td><td>63% (39)</td><td>71% (43)</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>83% (34)</td><td>85% (34)</td><td>68% (36)</td><td>56% (38)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>59% (61)</td><td>59% (61)</td><td>52% (60)</td><td>48% (57)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>64% (59)</td><td>65% (59)</td><td>56% (61)</td><td>51% (63)</td></tr>
+<tr><td>McCamley gauss1</td><td>pelvis</td><td>TC</td><td>4% (60)</td><td>4% (61)</td><td>5% (70)</td><td>8% (53)</td></tr>
+</tbody></table></div>
+<p class="cap">Overall = all reference events of the activities shown (WearPD-Gait: standing and chair transfers not included). NEWBEE ramps, stairs and curbs pool up and down; WMCG level walking pools the three speeds.</p>
+
 <h2 id="references">References</h2>
-<ol class="refs"><li value="1">Castellaz, Wouda &amp; van Beijnum. <a href="https://doi.org/10.1109/TNSRE.2025.3622734">Estimating 3D Ground Reaction Forces During Daily Activities: A Reduced Sensor Setup and Virtual Pivot Point Approach</a>. <i>IEEE Transactions on Neural Systems and Rehabilitation Engineering 33 (2025)</i>.</li><li value="2">Losing &amp; Hasenjäger. <a href="https://www.nature.com/articles/s41597-022-01580-3">A Multi-Modal Gait Database of Natural Everyday-Walk in an Urban Environment</a>. <i>Scientific Data 9, 473 (2022)</i>.</li><li value="3">Hossain et al. <a href="https://www.nature.com/articles/s41597-026-07657-7">A Wearable Motion Capture Dataset for Gait Analysis Using IMUs and Shank-Mounted Egocentric Cameras</a>. <i>Scientific Data 13, 1477 (2026)</i>.</li><li value="4">Anderson et al. <a href="https://www.nature.com/articles/s41597-026-06806-2">WearGait-PD: An Open-Access Wearables Dataset for Gait in Parkinson’s Disease and Age-Matched Controls</a>. <i>Scientific Data 13, 440 (2026)</i>.</li></ol>
+<ol class="refs"><li value="1" id="ref-wgl">Castellaz, Wouda &amp; van Beijnum. <a href="https://doi.org/10.1109/TNSRE.2025.3622734">Estimating 3D Ground Reaction Forces During Daily Activities: A Reduced Sensor Setup and Virtual Pivot Point Approach</a>. <i>IEEE Transactions on Neural Systems and Rehabilitation Engineering 33 (2025)</i>.</li><li value="2" id="ref-newbee">Losing &amp; Hasenjäger. <a href="https://www.nature.com/articles/s41597-022-01580-3">A Multi-Modal Gait Database of Natural Everyday-Walk in an Urban Environment</a>. <i>Scientific Data 9, 473 (2022)</i>.</li><li value="3" id="ref-wmcg">Hossain et al. <a href="https://www.nature.com/articles/s41597-026-07657-7">A Wearable Motion Capture Dataset for Gait Analysis Using IMUs and Shank-Mounted Egocentric Cameras</a>. <i>Scientific Data 13, 1477 (2026)</i>.</li><li value="4" id="ref-wearpd">Anderson et al. <a href="https://www.nature.com/articles/s41597-026-06806-2">WearGait-PD: An Open-Access Wearables Dataset for Gait in Parkinson’s Disease and Age-Matched Controls</a>. <i>Scientific Data 13, 440 (2026)</i>.</li><li value="5" id="ref-bonci">Bonci et al. <a href="https://www.frontiersin.org/journals/bioengineering-and-biotechnology/articles/10.3389/fbioe.2022.868928/full">An Algorithm for Accurate Marker-Based Gait Event Detection in Healthy and Pathological Populations During Complex Motor Tasks</a>. <i>Frontiers in Bioengineering and Biotechnology 10, 868928 (2022)</i>.</li><li value="6" id="ref-baetens">Baetens, Turcksin, Loccufier, Chevalier &amp; Verstraten. <a href="https://plus.figshare.com/articles/dataset/Kinematic_kinetic_EMG_and_pressure_data_for_daily_life_locomotion_activities/30294658?file=67423086">Kinematic, kinetic, EMG and pressure data for daily life locomotion activities</a>. <i>Figshare+ (2026), dataset</i>.</li></ol>
 
 </main></body></html>
