@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Biomechanical Validation</title>
+<meta name="description" content="Validation of the Neon-IMU-Analysis biomechanical pipeline (pelvis and foot IMUs) on public gait datasets.">
+<style>
+:root{--bg:#ffffff;--fg:#1d2127;--muted:#5b6470;--line:#d9dde3;--card:#f6f7f9;--accent:#c62f2b;--ours:#fdeceb;--ref:#eef3fb;--box:#ffffff;--grp:#f3f5f8}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15181c;--fg:#e6e8eb;--muted:#9aa3ae;--line:#323840;--card:#1d2126;--accent:#ff6b63;--ours:#3a2222;--ref:#1f2a3a;--box:#1d2126;--grp:#191c21}}
+:root[data-theme="dark"]{--bg:#15181c;--fg:#e6e8eb;--muted:#9aa3ae;--line:#323840;--card:#1d2126;--accent:#ff6b63;--ours:#3a2222;--ref:#1f2a3a;--box:#1d2126;--grp:#191c21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:1080px;margin:0 auto;padding:40px 16px 64px}
+h1{font-size:2rem;line-height:1.25;margin:0 0 8px}
+h2{font-size:1.35rem;margin:48px 0 12px;padding-top:8px;border-top:1px solid var(--line)}
+p,li{color:var(--fg)} .lead{color:var(--muted);font-size:1.05rem;margin-top:0}
+nav{display:flex;flex-wrap:wrap;gap:6px 18px;margin:18px 0 8px;font-size:.95rem}
+a{color:var(--accent)}
+.fig{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0}
+.fig svg{width:100%;height:auto;display:block}
+svg .box{fill:var(--box);stroke:var(--fg);stroke-width:1.3}
+svg .out{fill:var(--ref)}
+svg .val{fill:var(--ours);stroke:var(--accent);stroke-width:1.2;stroke-dasharray:4 3}
+svg .t{fill:var(--fg);font-size:13px;text-anchor:middle;font-weight:600}
+svg .s{fill:var(--muted);font-size:12px;font-weight:400}
+svg .lab{fill:var(--fg);font-size:15px;font-weight:700}
+svg .cite{fill:var(--accent);font-size:11.5px;text-anchor:middle;text-decoration:underline}
+svg .vh{fill:var(--muted);font-size:11px;text-anchor:middle;font-style:italic}
+svg .vd{fill:var(--accent);font-size:11.5px;text-anchor:middle;font-weight:600}
+svg .vm{fill:var(--fg);font-size:12px;text-anchor:middle;font-weight:600}
+svg a:hover .vd, svg a:hover .cite, svg a:hover tspan{text-decoration:underline}
+svg .arr{fill:none;stroke:var(--fg);stroke-width:1.6;marker-end:url(#ar)}
+svg .brk{fill:none;stroke:var(--fg);stroke-width:1.6}
+svg .vl{stroke:var(--accent);stroke-width:1.2;stroke-dasharray:3 3}
+svg .ah{fill:var(--fg)}
+svg .off{opacity:.3}
+.legend{font-size:.88rem;color:var(--muted)}
+.authors{font-size:1.02rem;margin:0 0 6px} .aff{color:var(--muted)}
+ol.refs li{margin:4px 0}
+</style></head>
+<body><main>
+<h1>Biomechanical Validation for Neon-IMU-Analysis</h1>
+<p class="authors">Vignesh Radhakrishnan and Mark Hollands<br><span class="aff">School of Sport &amp; Exercise Sciences, Liverpool John Moores University, UK</span></p>
+<p class="lead">This page shows the validation of our biomechanical pipeline which integrates different biomechanical principles.</p>
+<nav><a href="#pipeline">Pipeline</a><a href="#references">References</a></nav>
+
+<h2 id="pipeline">Pipeline</h2>
+<div class="fig"><svg viewBox="0 0 1000 910" role="img" aria-label="Proposed pipeline: Pupil Labs Neon glasses and three IMUs (pelvis, left and right foot) into calibration (based on the WGL CMP calibration) and time synchronisation. The Neon data go to the Pupil Labs analysis, giving eye and pupillometric metrics; the IMU data go through gait-sequence detection, stride detection, gait event detection, ZUPT and WGL CMP to biomechanical metrics (spatiotemporal, stability, nonlinear). Validation: the datasets each step is checked on; the eye-tracking branch is not validated here.">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>
+<text x="10" y="20" class="lab">Proposed pipeline</text>
+<image href="assets/setup.png" x="10" y="44" width="190" height="306" preserveAspectRatio="xMidYMid meet"/>
+<polyline points="204,70.08524590163934 222,70.08524590163934 222,184 238,184" class="arr"/>
+<polyline points="204,166.9016393442623 208,166.9016393442623 208,308.3639344262295 204,308.3639344262295" class="brk"/>
+<line x1="204" y1="285.79016393442623" x2="208" y2="285.79016393442623" class="brk"/>
+<polyline points="208,234 238,234" class="arr"/>
+<rect x="240" y="159" width="200" height="90" rx="7" class="box"/>
+<text x="340" y="186" class="t"><tspan x="340">Calibration</tspan><tspan x="340" dy="16" class="s">based on the WGL CMP calibration</tspan><tspan x="340" dy="16">+ time-synchronisation</tspan></text>
+<a href="https://doi.org/10.1109/TNSRE.2025.3622734" target="_blank" rel="noopener"><text x="340" y="150" class="cite">Castellaz et al. 2025 [1]</text></a>
+<g>
+<polyline points="441,179 470,179 470,104 498,104" class="arr"/>
+<rect x="500" y="76" width="180" height="56" rx="7" class="box"/>
+<text x="590" y="109" class="t"><tspan x="590">Pupil Labs analysis</tspan></text>
+<polyline points="681,104 718,104" class="arr"/>
+<rect x="720" y="76" width="270" height="56" rx="7" class="box out"/>
+<text x="855" y="109" class="t"><tspan x="855">Eye and pupillometric metrics</tspan></text>
+</g>
+<polyline points="290,250 290,292" class="arr"/>
+<rect x="240" y="294" width="100" height="70" rx="7" class="box"/>
+<text x="290.0" y="326.0" class="t"><tspan x="290.0">Gait-sequence</tspan><tspan x="290.0" dy="16">detection</tspan></text>
+<polyline points="341,329.0 354,329.0" class="arr"/>
+<rect x="356" y="294" width="100" height="70" rx="7" class="box"/>
+<text x="406.0" y="326.0" class="t"><tspan x="406.0">Stride</tspan><tspan x="406.0" dy="16">detection</tspan></text>
+<polyline points="457,329.0 470,329.0" class="arr"/>
+<rect x="472" y="294" width="100" height="70" rx="7" class="box"/>
+<text x="522.0" y="326.0" class="t"><tspan x="522.0">Gait event</tspan><tspan x="522.0" dy="16">detection</tspan></text>
+<polyline points="573,329.0 586,329.0" class="arr"/>
+<rect x="588" y="294" width="100" height="70" rx="7" class="box"/>
+<text x="638.0" y="318.0" class="t"><tspan x="638.0">ZUPT</tspan><tspan x="638.0" dy="16" class="s">zero-velocity</tspan><tspan x="638.0" dy="16" class="s">updates</tspan></text>
+<polyline points="689,329.0 702,329.0" class="arr"/>
+<rect x="704" y="294" width="100" height="70" rx="7" class="box"/>
+<text x="754.0" y="318.0" class="t"><tspan x="754.0">WGL CMP</tspan><tspan x="754.0" dy="16" class="s">feet + CoM</tspan><tspan x="754.0" dy="16" class="s">trajectories</tspan></text>
+<polyline points="805,329.0 818,329.0" class="arr"/>
+<rect x="820" y="294" width="170" height="70" rx="7" class="box out"/>
+<text x="905" y="315" class="t"><tspan x="905">Biomechanical metrics</tspan><tspan x="905" dy="16" class="s">spatiotemporal · stability</tspan><tspan x="905" dy="16" class="s">nonlinear</tspan></text>
+<text x="10" y="416" class="lab">Validation: the datasets each step is checked on</text>
+<image href="assets/setup.png" x="10" y="440" width="190" height="306" preserveAspectRatio="xMidYMid meet"/>
+<polyline points="204,466.0852459016393 222,466.0852459016393 222,580 238,580" class="arr"/>
+<polyline points="204,562.9016393442623 208,562.9016393442623 208,704.3639344262294 204,704.3639344262294" class="brk"/>
+<line x1="204" y1="681.7901639344262" x2="208" y2="681.7901639344262" class="brk"/>
+<polyline points="208,630 238,630" class="arr"/>
+<rect x="240" y="555" width="200" height="90" rx="7" class="box"/>
+<text x="340" y="582" class="t"><tspan x="340">Calibration</tspan><tspan x="340" dy="16" class="s">based on the WGL CMP calibration</tspan><tspan x="340" dy="16">+ time-synchronisation</tspan></text>
+<a href="https://doi.org/10.1109/TNSRE.2025.3622734" target="_blank" rel="noopener"><text x="340" y="546" class="cite">Castellaz et al. 2025 [1]</text></a>
+<g class="off">
+<polyline points="441,575 470,575 470,500 498,500" class="arr"/>
+<rect x="500" y="472" width="180" height="56" rx="7" class="box"/>
+<text x="590" y="505" class="t"><tspan x="590">Pupil Labs analysis</tspan></text>
+<polyline points="681,500 718,500" class="arr"/>
+<rect x="720" y="472" width="270" height="56" rx="7" class="box out"/>
+<text x="855" y="505" class="t"><tspan x="855">Eye and pupillometric metrics</tspan></text>
+</g>
+<polyline points="290,646 290,688" class="arr"/>
+<rect x="240" y="690" width="100" height="70" rx="7" class="box"/>
+<text x="290.0" y="722.0" class="t"><tspan x="290.0">Gait-sequence</tspan><tspan x="290.0" dy="16">detection</tspan></text>
+<polyline points="341,725.0 354,725.0" class="arr"/>
+<line x1="290.0" y1="760" x2="290.0" y2="774" class="vl"/>
+<rect x="240" y="774" width="100" height="54" rx="7" class="val"/>
+<text x="290.0" y="789" class="vh">validated on</text>
+<a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><text x="290.0" y="806" class="vd">WearPD-Gait</text></a>
+<a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><text x="290.0" y="822" class="vd">NEWBEE</text></a>
+<rect x="356" y="690" width="100" height="70" rx="7" class="box"/>
+<text x="406.0" y="722.0" class="t"><tspan x="406.0">Stride</tspan><tspan x="406.0" dy="16">detection</tspan></text>
+<polyline points="457,725.0 470,725.0" class="arr"/>
+<line x1="406.0" y1="760" x2="406.0" y2="774" class="vl"/>
+<rect x="356" y="774" width="100" height="38" rx="7" class="val"/>
+<text x="406.0" y="789" class="vh">validated on</text>
+<a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><text x="406.0" y="806" class="vd">WearPD-Gait</text></a>
+<rect x="472" y="690" width="100" height="70" rx="7" class="box"/>
+<text x="522.0" y="722.0" class="t"><tspan x="522.0">Gait event</tspan><tspan x="522.0" dy="16">detection</tspan></text>
+<polyline points="573,725.0 586,725.0" class="arr"/>
+<line x1="522.0" y1="760" x2="522.0" y2="774" class="vl"/>
+<rect x="472" y="774" width="100" height="70" rx="7" class="val"/>
+<text x="522.0" y="789" class="vh">validated on</text>
+<a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><text x="522.0" y="806" class="vd">NEWBEE</text></a>
+<a href="https://www.nature.com/articles/s41597-026-07657-7" target="_blank" rel="noopener"><text x="522.0" y="822" class="vd">WMCG</text></a>
+<a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><text x="522.0" y="838" class="vd">WearPD-Gait</text></a>
+<rect x="588" y="690" width="100" height="70" rx="7" class="box"/>
+<text x="638.0" y="714.0" class="t"><tspan x="638.0">ZUPT</tspan><tspan x="638.0" dy="16" class="s">zero-velocity</tspan><tspan x="638.0" dy="16" class="s">updates</tspan></text>
+<polyline points="689,725.0 702,725.0" class="arr"/>
+<line x1="638.0" y1="760" x2="638.0" y2="774" class="vl"/>
+<rect x="588" y="774" width="100" height="54" rx="7" class="val"/>
+<text x="638.0" y="789" class="vh">validated on</text>
+<a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><text x="638.0" y="806" class="vd">NEWBEE</text></a>
+<a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><text x="638.0" y="822" class="vd">WearPD-Gait</text></a>
+<rect x="704" y="690" width="100" height="70" rx="7" class="box"/>
+<text x="754.0" y="714.0" class="t"><tspan x="754.0">WGL CMP</tspan><tspan x="754.0" dy="16" class="s">feet + CoM</tspan><tspan x="754.0" dy="16" class="s">trajectories</tspan></text>
+<polyline points="805,725.0 818,725.0" class="arr"/>
+<rect x="820" y="690" width="170" height="70" rx="7" class="box out"/>
+<text x="905" y="711" class="t"><tspan x="905">Biomechanical metrics</tspan><tspan x="905" dy="16" class="s">spatiotemporal · stability</tspan><tspan x="905" dy="16" class="s">nonlinear</tspan></text>
+<line x1="905" y1="760" x2="905" y2="774" class="vl"/>
+<rect x="820" y="774" width="170" height="126" rx="7" class="val"/>
+<text x="905" y="789" class="vh">validated on</text>
+<text x="905" y="807" class="vm">Spatiotemporal</text>
+<text x="905" y="822" class="vh">(gaitmap + custom code)</text>
+<text x="905" y="837" class="vd"><a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><tspan class="vd">NEWBEE</tspan></a> · <a href="https://www.nature.com/articles/s41597-026-07657-7" target="_blank" rel="noopener"><tspan class="vd">WMCG</tspan></a></text>
+<text x="905" y="852" class="vd"><a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><tspan class="vd">WearPD-Gait</tspan></a></text>
+<text x="905" y="874" class="vm">Margin of stability and CoM</text>
+<text x="905" y="889" class="vd"><a href="https://www.nature.com/articles/s41597-026-07657-7" target="_blank" rel="noopener"><tspan class="vd">WMCG</tspan></a> · <a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><tspan class="vd">NEWBEE</tspan></a></text>
+</svg></div>
+<p class="legend">Pupil Labs Neon glasses and three IMUs (pelvis, left and right foot) are calibrated and time-synchronised. The Neon data go to the Pupil Labs analysis; the IMU data go through gait-sequence, stride and gait-event detection, zero-velocity updates (ZUPT) and WGL CMP to the biomechanical metrics. In the validation the eye-tracking branch is greyed out (not validated here); the red boxes give the datasets each step is checked on.</p>
+
+<h2 id="references">References</h2>
+<ol class="refs"><li value="1">Castellaz, Wouda &amp; van Beijnum. <a href="https://doi.org/10.1109/TNSRE.2025.3622734">Estimating 3D Ground Reaction Forces During Daily Activities: A Reduced Sensor Setup and Virtual Pivot Point Approach</a>. <i>IEEE Transactions on Neural Systems and Rehabilitation Engineering 33 (2025)</i>.</li><li value="2">Losing &amp; Hasenjäger. <a href="https://www.nature.com/articles/s41597-022-01580-3">A Multi-Modal Gait Database of Natural Everyday-Walk in an Urban Environment</a>. <i>Scientific Data 9, 473 (2022)</i>.</li><li value="3">Hossain et al. <a href="https://www.nature.com/articles/s41597-026-07657-7">A Wearable Motion Capture Dataset for Gait Analysis Using IMUs and Shank-Mounted Egocentric Cameras</a>. <i>Scientific Data 13, 1477 (2026)</i>.</li><li value="4">Anderson et al. <a href="https://www.nature.com/articles/s41597-026-06806-2">WearGait-PD: An Open-Access Wearables Dataset for Gait in Parkinson’s Disease and Age-Matched Controls</a>. <i>Scientific Data 13, 440 (2026)</i>.</li></ol>
+
+</main></body></html>
