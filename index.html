@@ -15,6 +15,7 @@ p,li{color:var(--fg)} .lead{color:var(--muted);font-size:1.05rem;margin-top:0}
 nav{display:flex;flex-wrap:wrap;gap:6px 18px;margin:18px 0 8px;font-size:.95rem}
 a{color:var(--accent)}
 .fig{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0}
+.fig.wide{width:min(1560px,calc(100vw - 32px));box-sizing:border-box;position:relative;left:50%;transform:translateX(-50%)}
 .fig svg{width:100%;height:auto;display:block}
 svg .box{fill:var(--box);stroke:var(--fg);stroke-width:1.3}
 svg .out{fill:var(--ref)}
@@ -32,10 +33,15 @@ svg .brk{fill:none;stroke:var(--fg);stroke-width:1.6}
 svg .vl{stroke:var(--accent);stroke-width:1.2;stroke-dasharray:3 3}
 svg .ah{fill:var(--fg)}
 svg .off{opacity:.3}
+svg .grp{fill:var(--grp);stroke:var(--muted);stroke-width:1.2}
+svg .branch{fill:none;stroke:var(--fg);stroke-width:1.4;stroke-dasharray:2 4;stroke-linecap:round}
+svg .dash{stroke-dasharray:6 4}
+svg .ours{fill:var(--ours);stroke:var(--accent);stroke-width:1.8}
+svg .gl{fill:var(--muted);font-size:12.5px;text-anchor:middle;font-weight:600}
 .legend{font-size:.88rem;color:var(--muted)}
 .authors{font-size:1.02rem;margin:0 0 6px} .aff{color:var(--muted)}
 ol.refs li{margin:4px 0}
-h3{font-size:1.05rem;margin:28px 0 8px} h4{font-size:.98rem;margin:22px 0 4px}
+h3{font-size:1.25rem;margin:32px 0 10px} h4{font-size:.98rem;margin:22px 0 4px}
 .cap{color:var(--muted);font-size:.88rem;margin:6px 0 0}
 .tw{overflow-x:auto;margin:10px 0}
 table{border-collapse:collapse;width:100%;font-size:.92rem}
@@ -57,105 +63,101 @@ table.ev{font-size:.82rem} table.ev th,table.ev td{padding:6px 6px}
 <nav><a href="#pipeline">Pipeline</a><a href="#datasets">Datasets</a><a href="#reference-data">Reference data</a><a href="#metrics">Metrics</a><a href="#results">Results</a><a href="#references">References</a></nav>
 
 <h2 id="pipeline">Pipeline</h2>
-<div class="fig"><svg viewBox="0 0 1000 910" role="img" aria-label="Proposed pipeline: Pupil Labs Neon glasses and three IMUs (pelvis, left and right foot) into calibration (based on the WGL CMP calibration) and time synchronisation. The Neon data go to the Pupil Labs analysis, giving eye and pupillometric metrics; the IMU data go through gait-sequence detection, stride detection, gait event detection, ZUPT and WGL CMP to biomechanical metrics (spatiotemporal, stability, nonlinear). Validation: the datasets each step is checked on; the eye-tracking branch is not validated here.">
+<div class="fig wide"><svg viewBox="0 0 1566 600" role="img" aria-label="Validation pipeline: Pupil Labs Neon glasses and three IMUs (pelvis, left and right foot) into calibration (based on the WGL CMP calibration) and time synchronisation. Greyed out (not validated here): the trajectory branch (images and IMU into the SLAM module, giving a metric point cloud and trajectory) and the eye-tracking branch (Pupil Labs analysis, giving eye and pupillometric metrics). The IMU data go through gait-sequence detection, stride detection, gait event detection, ZUPT and WGL CMP to biomechanical metrics; the red boxes give the datasets each step is checked on.">
 <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>
-<text x="10" y="20" class="lab">Proposed pipeline</text>
-<image href="assets/setup.png" x="10" y="44" width="190" height="306" preserveAspectRatio="xMidYMid meet"/>
-<polyline points="204,70.08524590163934 222,70.08524590163934 222,184 238,184" class="arr"/>
-<polyline points="204,166.9016393442623 208,166.9016393442623 208,308.3639344262295 204,308.3639344262295" class="brk"/>
-<line x1="204" y1="285.79016393442623" x2="208" y2="285.79016393442623" class="brk"/>
-<polyline points="208,234 238,234" class="arr"/>
-<rect x="240" y="159" width="200" height="90" rx="7" class="box"/>
-<text x="340" y="186" class="t"><tspan x="340">Calibration</tspan><tspan x="340" dy="16" class="s">based on the WGL CMP calibration</tspan><tspan x="340" dy="16">+ time-synchronisation</tspan></text>
-<a href="https://doi.org/10.1109/TNSRE.2025.3622734" target="_blank" rel="noopener"><text x="340" y="150" class="cite">Castellaz et al. 2025 [1]</text></a>
-<g>
-<polyline points="441,179 470,179 470,104 498,104" class="arr"/>
-<rect x="500" y="76" width="180" height="56" rx="7" class="box"/>
-<text x="590" y="109" class="t"><tspan x="590">Pupil Labs analysis</tspan></text>
-<polyline points="681,104 718,104" class="arr"/>
-<rect x="720" y="76" width="270" height="56" rx="7" class="box out"/>
-<text x="855" y="109" class="t"><tspan x="855">Eye and pupillometric metrics</tspan></text>
-</g>
-<polyline points="290,250 290,292" class="arr"/>
-<rect x="240" y="294" width="100" height="70" rx="7" class="box"/>
-<text x="290.0" y="326.0" class="t"><tspan x="290.0">Gait-sequence</tspan><tspan x="290.0" dy="16">detection</tspan></text>
-<polyline points="341,329.0 354,329.0" class="arr"/>
-<rect x="356" y="294" width="100" height="70" rx="7" class="box"/>
-<text x="406.0" y="326.0" class="t"><tspan x="406.0">Stride</tspan><tspan x="406.0" dy="16">detection</tspan></text>
-<polyline points="457,329.0 470,329.0" class="arr"/>
-<rect x="472" y="294" width="100" height="70" rx="7" class="box"/>
-<text x="522.0" y="326.0" class="t"><tspan x="522.0">Gait event</tspan><tspan x="522.0" dy="16">detection</tspan></text>
-<polyline points="573,329.0 586,329.0" class="arr"/>
-<rect x="588" y="294" width="100" height="70" rx="7" class="box"/>
-<text x="638.0" y="318.0" class="t"><tspan x="638.0">ZUPT</tspan><tspan x="638.0" dy="16" class="s">zero-velocity</tspan><tspan x="638.0" dy="16" class="s">updates</tspan></text>
-<polyline points="689,329.0 702,329.0" class="arr"/>
-<rect x="704" y="294" width="100" height="70" rx="7" class="box"/>
-<text x="754.0" y="318.0" class="t"><tspan x="754.0">WGL CMP</tspan><tspan x="754.0" dy="16" class="s">feet + CoM</tspan><tspan x="754.0" dy="16" class="s">trajectories</tspan></text>
-<polyline points="805,329.0 818,329.0" class="arr"/>
-<rect x="820" y="294" width="170" height="70" rx="7" class="box out"/>
-<text x="905" y="315" class="t"><tspan x="905">Biomechanical metrics</tspan><tspan x="905" dy="16" class="s">spatiotemporal · stability</tspan><tspan x="905" dy="16" class="s">nonlinear</tspan></text>
-<text x="10" y="416" class="lab">Validation: the datasets each step is checked on</text>
-<image href="assets/setup.png" x="10" y="440" width="190" height="306" preserveAspectRatio="xMidYMid meet"/>
-<polyline points="204,466.0852459016393 222,466.0852459016393 222,580 238,580" class="arr"/>
-<polyline points="204,562.9016393442623 208,562.9016393442623 208,704.3639344262294 204,704.3639344262294" class="brk"/>
-<line x1="204" y1="681.7901639344262" x2="208" y2="681.7901639344262" class="brk"/>
-<polyline points="208,630 238,630" class="arr"/>
-<rect x="240" y="555" width="200" height="90" rx="7" class="box"/>
-<text x="340" y="582" class="t"><tspan x="340">Calibration</tspan><tspan x="340" dy="16" class="s">based on the WGL CMP calibration</tspan><tspan x="340" dy="16">+ time-synchronisation</tspan></text>
-<a href="https://doi.org/10.1109/TNSRE.2025.3622734" target="_blank" rel="noopener"><text x="340" y="546" class="cite">Castellaz et al. 2025 [1]</text></a>
+<text x="10" y="20" class="lab">Validation pipeline: the datasets each step is checked on</text>
+<image href="assets/setup.png" x="10" y="44" width="336" height="540" preserveAspectRatio="xMidYMid meet"/>
+<polyline points="350,90.03278688524591 384,90.03278688524591" class="arr"/>
+<polyline points="350,260.88524590163934 354,260.88524590163934 354,510.5245901639344 350,510.5245901639344" class="brk"/>
+<line x1="350" y1="470.6885245901639" x2="354" y2="470.6885245901639" class="brk"/>
+<polyline points="354,470.6885245901639 384,470.6885245901639" class="arr"/>
+<rect x="386" y="44" width="170" height="540" rx="7" class="box"/>
+<text x="471.0" y="300.0" class="t"><tspan x="471.0">Calibration</tspan><tspan x="471.0" dy="16" class="s">based on the WGL</tspan><tspan x="471.0" dy="16" class="s">CMP calibration</tspan><tspan x="471.0" dy="16">+ time-synchronisation</tspan></text>
+<a href="https://doi.org/10.1109/TNSRE.2025.3622734" target="_blank" rel="noopener"><text x="471.0" y="36" class="cite">Castellaz et al. 2025 [1]</text></a>
 <g class="off">
-<polyline points="441,575 470,575 470,500 498,500" class="arr"/>
-<rect x="500" y="472" width="180" height="56" rx="7" class="box"/>
-<text x="590" y="505" class="t"><tspan x="590">Pupil Labs analysis</tspan></text>
-<polyline points="681,500 718,500" class="arr"/>
-<rect x="720" y="472" width="270" height="56" rx="7" class="box out"/>
-<text x="855" y="505" class="t"><tspan x="855">Eye and pupillometric metrics</tspan></text>
+<polyline points="557,90.03278688524591 594,90.03278688524591" class="arr"/>
+<g transform="translate(166,0)">
+<rect x="430" y="48" width="110" height="140" rx="7" class="box"/>
+<text x="485" y="112" class="t"><tspan x="485">Images + IMU</tspan><tspan x="485" dy="16" class="s">egocentric glasses</tspan></text>
+<rect x="562" y="44" width="450" height="150" rx="7" class="grp"/>
+<text x="787" y="61" class="gl">SLAM module</text>
+<polyline points="541,88 570,88" class="arr"/>
+<polyline points="541,160 580,160" class="arr"/>
+<rect x="572" y="68" width="430" height="40" rx="7" class="box"/>
+<text x="787" y="84" class="t"><tspan x="787">Visual-inertial SLAM</tspan><tspan x="787" dy="16" class="s">metric from images + IMU</tspan></text>
+<rect x="572" y="112" width="430" height="78" rx="7" class="branch"/>
+<text x="787" y="128" class="gl">video-only models: + EPO + our IMU integration</text>
+<rect x="582" y="134" width="118" height="52" rx="7" class="box dash"/>
+<text x="641" y="155" class="t"><tspan x="641">Video-only</tspan><tspan x="641" dy="16">SLAM</tspan></text>
+<polyline points="701,160 712,160" class="arr"/>
+<rect x="714" y="134" width="106" height="52" rx="7" class="box"/>
+<text x="767" y="155" class="t"><tspan x="767">EPO</tspan><tspan x="767" dy="16" class="s">pose refinement</tspan></text>
+<polyline points="821,160 832,160" class="arr"/>
+<rect x="834" y="134" width="158" height="52" rx="7" class="box ours"/>
+<text x="913" y="149" class="t"><tspan x="913">IMU pre-integration</tspan><tspan x="913" dy="16">+ VI factor graph</tspan><tspan x="913" dy="16" class="s">metric scale, gravity</tspan></text>
+<polyline points="1013,119 1036,119" class="arr"/>
+<rect x="1038" y="89" width="132" height="60" rx="7" class="box"/>
+<text x="1104" y="115" class="t"><tspan x="1104">ScaRF-SLAM</tspan><tspan x="1104" dy="16" class="s">dense depth fusion</tspan></text>
+<polyline points="1171,119 1192,119" class="arr"/>
+<rect x="1194" y="89" width="196" height="60" rx="7" class="box out"/>
+<text x="1292" y="115" class="t"><tspan x="1292">Metric 3D point cloud</tspan><tspan x="1292" dy="16">+ trajectory</tspan></text>
+</g></g>
+<g class="off">
+<polyline points="557,284.0 594,284.0" class="arr"/>
+<g transform="translate(166,0)">
+<rect x="430" y="259.0" width="200" height="50" rx="7" class="box"/>
+<text x="530" y="289.0" class="t"><tspan x="530">Pupil Labs analysis</tspan></text>
+<polyline points="631,284.0 658,284.0" class="arr"/>
+<rect x="660" y="259.0" width="290" height="50" rx="7" class="box out"/>
+<text x="805" y="289.0" class="t"><tspan x="805">Eye and pupillometric metrics</tspan></text>
+</g></g>
+<polyline points="557,409.0 594,409.0" class="arr"/>
+<g transform="translate(166,0)">
+<rect x="430" y="374" width="110" height="70" rx="7" class="box"/>
+<text x="485.0" y="406.0" class="t"><tspan x="485.0">Gait-sequence</tspan><tspan x="485.0" dy="16">detection</tspan></text>
+<polyline points="541,409.0 556,409.0" class="arr"/>
+<line x1="485.0" y1="444" x2="485.0" y2="458" class="vl"/>
+<rect x="430" y="458" width="110" height="54" rx="7" class="val"/>
+<text x="485.0" y="473" class="vh">validated on</text>
+<a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><text x="485.0" y="490" class="vd">WearPD-Gait</text></a>
+<a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><text x="485.0" y="506" class="vd">NEWBEE</text></a>
+<rect x="558" y="374" width="110" height="70" rx="7" class="box"/>
+<text x="613.0" y="406.0" class="t"><tspan x="613.0">Stride</tspan><tspan x="613.0" dy="16">detection</tspan></text>
+<polyline points="669,409.0 684,409.0" class="arr"/>
+<rect x="686" y="374" width="110" height="70" rx="7" class="box"/>
+<text x="741.0" y="406.0" class="t"><tspan x="741.0">Gait event</tspan><tspan x="741.0" dy="16">detection</tspan></text>
+<polyline points="797,409.0 812,409.0" class="arr"/>
+<line x1="741.0" y1="444" x2="741.0" y2="458" class="vl"/>
+<rect x="686" y="458" width="110" height="70" rx="7" class="val"/>
+<text x="741.0" y="473" class="vh">validated on</text>
+<a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><text x="741.0" y="490" class="vd">NEWBEE</text></a>
+<a href="https://www.nature.com/articles/s41597-026-07657-7" target="_blank" rel="noopener"><text x="741.0" y="506" class="vd">WMCG</text></a>
+<a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><text x="741.0" y="522" class="vd">WearPD-Gait</text></a>
+<rect x="814" y="374" width="110" height="70" rx="7" class="box"/>
+<text x="869.0" y="398.0" class="t"><tspan x="869.0">ZUPT</tspan><tspan x="869.0" dy="16" class="s">zero-velocity</tspan><tspan x="869.0" dy="16" class="s">updates</tspan></text>
+<polyline points="925,409.0 940,409.0" class="arr"/>
+<line x1="869.0" y1="444" x2="869.0" y2="458" class="vl"/>
+<rect x="814" y="458" width="110" height="54" rx="7" class="val"/>
+<text x="869.0" y="473" class="vh">validated on</text>
+<a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><text x="869.0" y="490" class="vd">NEWBEE</text></a>
+<a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><text x="869.0" y="506" class="vd">WearPD-Gait</text></a>
+<rect x="942" y="374" width="110" height="70" rx="7" class="box"/>
+<text x="997.0" y="398.0" class="t"><tspan x="997.0">WGL CMP</tspan><tspan x="997.0" dy="16" class="s">feet + CoM</tspan><tspan x="997.0" dy="16" class="s">trajectories</tspan></text>
+<polyline points="1053,409.0 1068,409.0" class="arr"/>
+<rect x="1070" y="374" width="200" height="70" rx="7" class="box out"/>
+<text x="1170" y="395" class="t"><tspan x="1170">Biomechanical metrics</tspan><tspan x="1170" dy="16" class="s">spatiotemporal · stability</tspan><tspan x="1170" dy="16" class="s">nonlinear</tspan></text>
+<line x1="1170" y1="444" x2="1170" y2="458" class="vl"/>
+<rect x="1070" y="458" width="200" height="126" rx="7" class="val"/>
+<text x="1170" y="473" class="vh">validated on</text>
+<text x="1170" y="491" class="vm">Spatiotemporal</text>
+<text x="1170" y="506" class="vh">(gaitmap + custom code)</text>
+<text x="1170" y="521" class="vd"><a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><tspan class="vd">NEWBEE</tspan></a> · <a href="https://www.nature.com/articles/s41597-026-07657-7" target="_blank" rel="noopener"><tspan class="vd">WMCG</tspan></a></text>
+<text x="1170" y="536" class="vd"><a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><tspan class="vd">WearPD-Gait</tspan></a></text>
+<text x="1170" y="558" class="vm">Margin of stability and CoM</text>
+<text x="1170" y="573" class="vd"><a href="https://www.nature.com/articles/s41597-026-07657-7" target="_blank" rel="noopener"><tspan class="vd">WMCG</tspan></a> · <a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><tspan class="vd">NEWBEE</tspan></a></text>
 </g>
-<polyline points="290,646 290,688" class="arr"/>
-<rect x="240" y="690" width="100" height="70" rx="7" class="box"/>
-<text x="290.0" y="722.0" class="t"><tspan x="290.0">Gait-sequence</tspan><tspan x="290.0" dy="16">detection</tspan></text>
-<polyline points="341,725.0 354,725.0" class="arr"/>
-<line x1="290.0" y1="760" x2="290.0" y2="774" class="vl"/>
-<rect x="240" y="774" width="100" height="54" rx="7" class="val"/>
-<text x="290.0" y="789" class="vh">validated on</text>
-<a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><text x="290.0" y="806" class="vd">WearPD-Gait</text></a>
-<a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><text x="290.0" y="822" class="vd">NEWBEE</text></a>
-<rect x="356" y="690" width="100" height="70" rx="7" class="box"/>
-<text x="406.0" y="722.0" class="t"><tspan x="406.0">Stride</tspan><tspan x="406.0" dy="16">detection</tspan></text>
-<polyline points="457,725.0 470,725.0" class="arr"/>
-<rect x="472" y="690" width="100" height="70" rx="7" class="box"/>
-<text x="522.0" y="722.0" class="t"><tspan x="522.0">Gait event</tspan><tspan x="522.0" dy="16">detection</tspan></text>
-<polyline points="573,725.0 586,725.0" class="arr"/>
-<line x1="522.0" y1="760" x2="522.0" y2="774" class="vl"/>
-<rect x="472" y="774" width="100" height="70" rx="7" class="val"/>
-<text x="522.0" y="789" class="vh">validated on</text>
-<a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><text x="522.0" y="806" class="vd">NEWBEE</text></a>
-<a href="https://www.nature.com/articles/s41597-026-07657-7" target="_blank" rel="noopener"><text x="522.0" y="822" class="vd">WMCG</text></a>
-<a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><text x="522.0" y="838" class="vd">WearPD-Gait</text></a>
-<rect x="588" y="690" width="100" height="70" rx="7" class="box"/>
-<text x="638.0" y="714.0" class="t"><tspan x="638.0">ZUPT</tspan><tspan x="638.0" dy="16" class="s">zero-velocity</tspan><tspan x="638.0" dy="16" class="s">updates</tspan></text>
-<polyline points="689,725.0 702,725.0" class="arr"/>
-<line x1="638.0" y1="760" x2="638.0" y2="774" class="vl"/>
-<rect x="588" y="774" width="100" height="54" rx="7" class="val"/>
-<text x="638.0" y="789" class="vh">validated on</text>
-<a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><text x="638.0" y="806" class="vd">NEWBEE</text></a>
-<a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><text x="638.0" y="822" class="vd">WearPD-Gait</text></a>
-<rect x="704" y="690" width="100" height="70" rx="7" class="box"/>
-<text x="754.0" y="714.0" class="t"><tspan x="754.0">WGL CMP</tspan><tspan x="754.0" dy="16" class="s">feet + CoM</tspan><tspan x="754.0" dy="16" class="s">trajectories</tspan></text>
-<polyline points="805,725.0 818,725.0" class="arr"/>
-<rect x="820" y="690" width="170" height="70" rx="7" class="box out"/>
-<text x="905" y="711" class="t"><tspan x="905">Biomechanical metrics</tspan><tspan x="905" dy="16" class="s">spatiotemporal · stability</tspan><tspan x="905" dy="16" class="s">nonlinear</tspan></text>
-<line x1="905" y1="760" x2="905" y2="774" class="vl"/>
-<rect x="820" y="774" width="170" height="126" rx="7" class="val"/>
-<text x="905" y="789" class="vh">validated on</text>
-<text x="905" y="807" class="vm">Spatiotemporal</text>
-<text x="905" y="822" class="vh">(gaitmap + custom code)</text>
-<text x="905" y="837" class="vd"><a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><tspan class="vd">NEWBEE</tspan></a> · <a href="https://www.nature.com/articles/s41597-026-07657-7" target="_blank" rel="noopener"><tspan class="vd">WMCG</tspan></a></text>
-<text x="905" y="852" class="vd"><a href="https://www.nature.com/articles/s41597-026-06806-2" target="_blank" rel="noopener"><tspan class="vd">WearPD-Gait</tspan></a></text>
-<text x="905" y="874" class="vm">Margin of stability and CoM</text>
-<text x="905" y="889" class="vd"><a href="https://www.nature.com/articles/s41597-026-07657-7" target="_blank" rel="noopener"><tspan class="vd">WMCG</tspan></a> · <a href="https://www.nature.com/articles/s41597-022-01580-3" target="_blank" rel="noopener"><tspan class="vd">NEWBEE</tspan></a></text>
 </svg></div>
-<p class="legend">Pupil Labs Neon glasses and three IMUs (pelvis, left and right foot) are calibrated and time-synchronised. The Neon data go to the Pupil Labs analysis; the IMU data go through gait-sequence, stride and gait-event detection, zero-velocity updates (ZUPT) and WGL CMP to the biomechanical metrics. In the validation the eye-tracking branch is greyed out (not validated here); the red boxes give the datasets each step is checked on.</p>
+<p class="legend">The validation pipeline: Pupil Labs Neon glasses and three IMUs (pelvis, left and right foot) are calibrated and time-synchronised; the IMU data go through gait-sequence, stride and gait-event detection, zero-velocity updates (ZUPT) and WGL CMP to the biomechanical metrics. The trajectory and eye-tracking branches are greyed out (not validated here); the red boxes give the datasets each step is checked on. The overall pipeline is in the <a href="https://github.com/vigneshrk29/Neon-IMU-Pipeline" target="_blank" rel="noopener">Neon-IMU-Pipeline</a> repository.</p>
 
 <h2 id="datasets">Datasets</h2>
 <div class="tw"><table class="wrap"><thead><tr><th>dataset</th><th>sensors</th><th>participants</th><th>activities used</th><th>event reference</th></tr></thead><tbody>
@@ -166,10 +168,10 @@ table.ev{font-size:.82rem} table.ev th,table.ev td{padding:6px 6px}
 <p class="cap">From each dataset we use the lower-back (pelvis) IMU and the two foot IMUs. Ages: NEWBEE and WearPD-Gait from their papers; WMCG from the dataset’s participant file (the paper gives 23.9 ± 2.9 years).</p>
 
 <h2 id="reference-data">Reference data</h2>
-<h3>Gait-sequence detection</h3>
+<h3>I. Gait-sequence detection</h3>
 <p>WearPD-Gait <a href="#ref-wearpd">[4]</a>: the dataset’s activity labels, annotated frame by frame from synchronised video. Walking = Walk and Turn on the walkway, plus Stairs in free walking; not walking = Standing (and Chair in free walking). Frames with any other label (e.g. opening a door) or no label are not scored. NEWBEE <a href="#ref-newbee">[2]</a>: every recording is continuous walking, so the whole recording is the reference walking period.</p>
 
-<h3>Event detection</h3>
+<h3>II. Event detection</h3>
 <p>The reference events come from pressure insoles where available: NEWBEE <a href="#ref-newbee">[2]</a> and WearPD-Gait free walking <a href="#ref-wearpd">[4]</a> (insole total force &gt; 20 N). For WearPD-Gait walkway walking, the reference is the pressure walkway.</p>
 <p>For WMCG <a href="#ref-wmcg">[3]</a>, the reference is marker-based event detection from Bonci et al. <a href="#ref-bonci">[5]</a>: their variable-threshold (Ghoussayni, RWS) detector, run unchanged, with each participant’s average walking speed (mean of their normal-walking and stair-descent speeds).</p>
 <p>We validated this marker-based detection on the dataset of Baetens et al. <a href="#ref-baetens">[6]</a> (20 participants; level walking at three speeds, and stair ascent and descent step-over-step and step-by-step) against its Moticon insoles (total force &gt; 20 N; events matched within ±250 ms). It found 80–98% of the insole events, with a mean absolute timing error of 23–63 ms for initial contacts (IC) and 34–73 ms for final contacts (FC):</p>
@@ -183,8 +185,17 @@ table.ev{font-size:.82rem} table.ev th,table.ev td{padding:6px 6px}
 <tr><td>Stair descent (step-by-step)</td><td>2493</td><td>80%</td><td>63</td><td>2493</td><td>95%</td><td>44</td></tr>
 </tbody></table></div>
 
+<h3>III. ZUPT and foot contact</h3>
+<p>Reference foot contacts: from one initial contact to the next toe-off of the same foot. NEWBEE <a href="#ref-newbee">[2]</a>: the insoles’ step and lift events (the dataset’s <i>is_step</i> / <i>is_lifted</i> labels). WearPD-Gait free walking <a href="#ref-wearpd">[4]</a>: insole total force above 20 N (gaps shorter than 50 ms bridged, contacts shorter than 100 ms dropped). Walking types as for event detection.</p>
+
+<h3>IV. Gait metrics</h3>
+<p><b>NEWBEE</b> <a href="#ref-newbee">[2]</a>: stride and step metrics as in Hasenjäger &amp; Wiebel-Herboth <a href="#ref-hasenjaeger">[7]</a>, with the steps segmented by the insoles’ first ground contacts (<i>is_step</i>) and the foot positions from Xsens MVN (foot segment origin). Step distance: the distance between the two feet’s positions at two consecutive first ground contacts of opposite feet; step period: the time from the first ground contact of one foot to the next ground contact of the other foot. Stride distance and stride time: the same between two consecutive first ground contacts of one foot. Distances are horizontal, as gaitmap’s stride length.</p>
+<p><b>WMCG</b> <a href="#ref-wmcg">[3]</a>: a Visual3D lower-body CGM model, modified to the dataset’s marker set; the gait events were set and checked in Qualisys, and the stride and step metrics (stride length and width, cycle, stance and swing time) computed with Qualisys and Visual3D. Used here: stance and swing time and stride width from Visual3D; stride length, stride time, step distance and step period from the markers at the reference heel strikes (midpoint of the heel and first-metatarsal markers, horizontal, as gaitmap’s stride length). Centre of mass: OpenSim BodyKinematics with the dataset’s scaled OpenSim model and inverse-kinematics (.mot) files.</p>
+<p><b>WearPD-Gait</b> <a href="#ref-wearpd">[4]</a>: the dataset’s walkway summaries (ProtoKinetics walkway, PKMAS software): per participant and task (self-paced and hurried walking) the mean, SD and number of samples of step length, stride length, stride width, step time, stride time and stride velocity, from the steps on the walkway.</p>
+<p><b>Margin of stability</b> (NEWBEE and WMCG): Hof’s mediolateral margin of stability as in Fino et al. <a href="#ref-fino">[8]</a>: extrapolated centre of mass XCoM = CoM + v / ω₀ with ω₀ = √(g / l) (l = leg length: NEWBEE the participant’s hip height, WMCG the dataset’s leg length), the mediolateral axis from the instantaneous horizontal CoM velocity, MoS = base of support − XCoM along it, positive when the base of support is to the right of the XCoM for either foot. Base of support: NEWBEE the midpoint of the Xsens foot origin (ankle) and toe; WMCG the midpoint of the heel and first-metatarsal markers (LHEE / RHEE, L_1MT / R_1MT). Taken at each initial contact and at mid-stance (halfway initial contact → toe-off). CoM: NEWBEE the Xsens centre of mass (6 Hz low-pass); WMCG the OpenSim centre of mass.</p>
+
 <h2 id="metrics">Metrics</h2>
-<h3>Gait-sequence detection</h3>
+<h3>I. Gait-sequence detection</h3>
 <p>Frame by frame, against the reference walking periods:</p>
 <ul>
 <li><b>Sensitivity</b>: the percentage of reference walking time that lies inside a detected gait sequence.</li>
@@ -192,16 +203,32 @@ table.ev{font-size:.82rem} table.ev th,table.ev td{padding:6px 6px}
 <li><b>Accuracy</b>: the percentage of all scored time classified correctly (walking or not walking).</li>
 </ul>
 
-<h3>Event detection</h3>
+<h3>II. Event detection</h3>
 <ul>
-<li><b>Matching.</b> Each detected event is paired one-to-one with the nearest reference event of the same type (initial contact, IC; toe-off, TC), closest pairs first, within ±100 ms. The pelvis detectors do not say which foot an event belongs to, so all detectors are scored with both feet pooled.</li>
+<li><b>Matching.</b> Each detected event is paired one-to-one with the nearest reference event of the same type (initial contact, IC; toe-off, TC), closest pairs first, within ±100 ms. Foot detectors (and the modified pipeline) are matched per foot, and the two feet’s counts are added. The pelvis detectors do not say which foot an event belongs to, so they are matched against the reference events of both feet pooled.</li>
 <li><b>TP</b> (true positive): a detected event paired with a reference event. <b>FP</b> (false positive): a detected event with no reference event within ±100 ms. <b>FN</b> (false negative): a reference event with no detected event.</li>
 <li><b>Found</b> (recall): TP / (TP + FN), the percentage of reference events that were detected.</li>
 <li><b>MAE</b>: mean absolute timing error (IMU − reference) over the TPs, in ms.</li>
 </ul>
 
+<h3>III. ZUPT and foot contact</h3>
+<ul>
+<li><b>Found</b>: the % of reference foot contacts that hold at least one ZUPT (or, for the contact mask, at least one detected contact period) of that foot.</li>
+<li><b>Inside</b> [square brackets]: the % of ZUPT time (or detected contact time) around each reference contact — the contact and the swing after it — that lies inside a reference contact of that foot. Low values mean ZUPTs in swing.</li>
+</ul>
+
+<h3>IV. Gait metrics</h3>
+<ul>
+<li><b>Pairing.</b> Strides: an IMU stride and the reference stride of the same foot whose last initial contact lies within ±100 ms of the IMU stride’s IC. Steps: the reference step that ends at the landing foot’s last initial contact inside the IMU step. WMCG step width: each Visual3D stride paired with the IMU step in which the other foot lands inside that stride.</li>
+<li><b>Bias (SD)</b>: mean and standard deviation of IMU − reference over the paired strides or steps (WearPD-Gait: over the recordings’ means). <b>r</b>: Pearson’s correlation of the paired values.</li>
+<li><b>Large change</b>: a stride or step whose reference value differs from the trial’s mean (per walking type) by more than 1.5 reference SD. <b>n</b>: how many; <b>r</b>: correlation of the IMU and reference deviations, each from its own trial mean; <b>same direction</b>: the share where the IMU deviation has the same sign as the reference one (both larger, or both smaller, than usual).</li>
+<li><b>Without turns</b> (WMCG): leaving out the turns of the course — strides whose direction (the foot’s markers at its two initial contacts) changes by more than 30° from that foot’s previous stride, and the steps landing in them.</li>
+<li><b>MoS</b>: r between the pipeline’s MoS proxy and the reference MoS (only r, as the proxy is an acceleration).</li>
+</ul>
+
 <h2 id="results">Results</h2>
-<h3>Gait-sequence detection</h3>
+<p class="summary"><b>Snapshot.</b> In general, the modified pipeline which uses a circular logic has the best results for most cases. Results vary with dataset. Adding context-based adaptation (for example Herzer for stairs) would help improve results more.</p>
+<h3>I. Gait-sequence detection</h3>
 <div class="fig"><img src="assets/gait_sequences_newbee.png" alt="NEWBEE recording: reference walking and the gait sequences of each detector" loading="lazy"></div><p class="cap">Example: one NEWBEE recording (id02_courseC). Top row: the reference (the whole recording is walking). Rows below: the gait sequences of each detector.</p><div class="fig"><img src="assets/gait_sequences_wearpd.png" alt="Free-walking recording: reference walking periods and the gait sequences of each detector" loading="lazy"></div><p class="cap">Example: one WearPD-Gait free-walking recording (NLS193_control_FreeWalk). Top row: the reference labels (dark: walking; light: standing or chair; blank: not scored, e.g. opening a door). Rows below: the gait sequences of each detector.</p>
 <div class="tw"><table><thead><tr><th rowspan="2">detector</th><th>NEWBEE</th><th colspan="3" class="grp">WearPD-Gait walkway</th><th colspan="3" class="grp">WearPD-Gait free walking</th></tr><tr><th>sensitivity</th><th class="grp">sensitivity</th><th>specificity</th><th>accuracy</th><th class="grp">sensitivity</th><th>specificity</th><th>accuracy</th></tr></thead><tbody>
 <tr><td>silviaGS (pipeline default)</td><td>100%</td><td class=grp>99%</td><td>95%</td><td>98%</td><td class=grp>100%</td><td>87%</td><td>95%</td></tr>
@@ -213,83 +240,267 @@ table.ev{font-size:.82rem} table.ev th,table.ev td{padding:6px 6px}
 </tbody></table></div>
 <p class="cap">NEWBEE: pooled over all recordings. WearPD-Gait: median over recordings.</p>
 
-<h3>Event detection</h3>
+<h3>II. Event detection</h3>
 <div class="fig"><img src="assets/events_newbee.png" alt="Five gait cycles of NEWBEE level walking: foot and pelvis signals with the detected and the insole initial contacts and toe-offs" loading="lazy"></div><p class="cap">Example: five gait cycles of level walking from NEWBEE (trial id02_courseC). Signal: left-foot ML angular velocity. Vertical lines: insole reference for the left foot (solid IC, dashed TC). Markers: detected events, drawn on the signal — foot: Rampp on the Roth 2021 stride list; pelvis: IcdIonescu (IC) and McCamley gauss2 (TC) inside the silviaGS gait sequences. The pelvis does not say which foot an event belongs to, so only the pelvis events whose nearest reference event is a left-foot one are shown.</p>
-<p>Foot detectors (Rampp, Herzer, Roth) on the Roth 2021 stride list; pelvis detectors (IcdIonescu, IcdShinImproved, McCamley with the gauss1 or gauss2 wavelet and IC found at zero crossings (zc) or peaks; its TC does not depend on zc / peaks) inside the gait sequences of silviaGS. Each cell: % of reference events found (MAE in ms).</p>
-<p class="summary"><b>Snapshot.</b> In general, for initial contact (IC) Rampp (on the Roth 2021 stride list) works best, with a caveat: on stairs use either Herzer or IcdIonescu. For toe-off (TC), the Roth events work best. IcdIonescu’s performance improves when the matching window is widened from ±100 ms to ±250 ms (not shown).</p>
+<p><b>Foot detectors</b> (Rampp, Herzer, Roth) on the Roth 2021 stride list. <b>Pelvis detectors</b> (IcdIonescu, IcdShinImproved, McCamley with the gauss1 or gauss2 wavelet and IC found at zero crossings (zc) or peaks; its TC does not depend on zc / peaks) inside the gait sequences of silviaGS. <b>Modified pipeline</b>: integrates the methods above (WGL CMP, gaitmap, etc.) with custom software and logic. Details will be provided in the paper. Each cell: <b>recall</b>, the % of reference events detected (TP / (TP + FN)), with the <b>MAE</b> in ms in round brackets. Overall column only: <b>precision</b> in square brackets, the % of detected events that match a reference event (TP / (TP + FP)), over all detections in the recordings; it cannot be split by activity because false detections are not labelled.</p>
 <h4>NEWBEE</h4>
 <div class="tw"><table class="ev"><thead><tr><th rowspan="2">detector</th><th rowspan="2">sensor</th><th rowspan="2">event</th><th colspan="6">by activity</th><th colspan="3" class="grp">level walking, by position</th></tr><tr><th>overall</th><th>level walking</th><th>ramps</th><th>stairs up</th><th>stairs down</th><th>curbs</th><th class=grp>first/last step</th><th>turning</th><th>straight</th></tr></thead><tbody>
-<tr><td>Rampp</td><td>feet</td><td>IC</td><td>97% (30)</td><td>98% (29)</td><td>100% (29)</td><td>94% (33)</td><td>71% (37)</td><td>98% (26)</td><td class=grp>2% (18)</td><td>97% (28)</td><td>99% (29)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>IC</td><td>94% (39)</td><td>93% (40)</td><td>95% (39)</td><td>94% (34)</td><td>92% (39)</td><td>95% (38)</td><td class=grp>2% (20)</td><td>93% (40)</td><td>94% (40)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>IC</td><td>37% (59)</td><td>35% (60)</td><td>33% (62)</td><td>48% (53)</td><td>60% (55)</td><td>46% (54)</td><td class=grp>0%</td><td>36% (59)</td><td>35% (60)</td></tr>
-<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>86% (49)</td><td>88% (51)</td><td>88% (45)</td><td>69% (53)</td><td>78% (43)</td><td>89% (54)</td><td class=grp>23% (37)</td><td>87% (51)</td><td>89% (51)</td></tr>
-<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>78% (54)</td><td>80% (57)</td><td>82% (50)</td><td>56% (56)</td><td>59% (45)</td><td>72% (57)</td><td class=grp>34% (45)</td><td>77% (56)</td><td>81% (57)</td></tr>
-<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>70% (60)</td><td>69% (65)</td><td>73% (56)</td><td>55% (57)</td><td>83% (44)</td><td>67% (63)</td><td class=grp>20% (61)</td><td>68% (64)</td><td>70% (65)</td></tr>
-<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>4% (58)</td><td>1% (75)</td><td>2% (91)</td><td>13% (51)</td><td>47% (53)</td><td>2% (85)</td><td class=grp>2% (72)</td><td>2% (69)</td><td>0% (83)</td></tr>
-<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>6% (82)</td><td>5% (83)</td><td>5% (86)</td><td>18% (76)</td><td>12% (80)</td><td>3% (79)</td><td class=grp>0% (20)</td><td>5% (76)</td><td>5% (85)</td></tr>
-<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>94% (34)</td><td>96% (33)</td><td>97% (34)</td><td>82% (46)</td><td>76% (31)</td><td>96% (30)</td><td class=grp>0%</td><td>95% (32)</td><td>96% (33)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>TC</td><td>90% (50)</td><td>90% (50)</td><td>90% (49)</td><td>90% (49)</td><td>88% (45)</td><td>92% (51)</td><td class=grp>0%</td><td>90% (50)</td><td>91% (51)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>TC</td><td>91% (45)</td><td>91% (45)</td><td>92% (44)</td><td>90% (48)</td><td>87% (47)</td><td>92% (49)</td><td class=grp>0%</td><td>91% (46)</td><td>92% (45)</td></tr>
-<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>7% (77)</td><td>3% (86)</td><td>10% (83)</td><td>6% (70)</td><td>30% (58)</td><td>4% (82)</td><td class=grp>0% (100)</td><td>4% (84)</td><td>3% (86)</td></tr>
-<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>66% (58)</td><td>71% (60)</td><td>63% (57)</td><td>74% (47)</td><td>33% (67)</td><td>62% (66)</td><td class=grp>41% (53)</td><td>65% (61)</td><td>72% (60)</td></tr>
-<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>66% (58)</td><td>71% (60)</td><td>63% (57)</td><td>74% (47)</td><td>33% (67)</td><td>62% (66)</td><td class=grp>41% (53)</td><td>65% (61)</td><td>72% (60)</td></tr>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>97% (30) [99%]</td><td>98% (29)</td><td>100% (29)</td><td>94% (33)</td><td>71% (37)</td><td>98% (26)</td><td class=grp>2% (18)</td><td>97% (28)</td><td>99% (29)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>94% (39) [95%]</td><td>93% (40)</td><td>95% (39)</td><td>94% (34)</td><td>92% (39)</td><td>95% (38)</td><td class=grp>2% (20)</td><td>93% (40)</td><td>94% (40)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>37% (59) [49%]</td><td>35% (60)</td><td>33% (62)</td><td>48% (53)</td><td>60% (55)</td><td>46% (54)</td><td class=grp>0%</td><td>36% (59)</td><td>35% (60)</td></tr>
+<tr><td>Modified pipeline</td><td>feet</td><td>IC</td><td>98% (30) [98%]</td><td>98% (29)</td><td>100% (29)</td><td>95% (33)</td><td>87% (40)</td><td>98% (26)</td><td class=grp>2% (18)</td><td>97% (28)</td><td>99% (29)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>86% (49) [87%]</td><td>88% (51)</td><td>88% (45)</td><td>69% (53)</td><td>78% (43)</td><td>89% (54)</td><td class=grp>23% (37)</td><td>87% (51)</td><td>89% (51)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>78% (54) [79%]</td><td>80% (57)</td><td>82% (50)</td><td>56% (56)</td><td>59% (45)</td><td>72% (57)</td><td class=grp>34% (45)</td><td>77% (56)</td><td>81% (57)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>70% (60) [71%]</td><td>69% (65)</td><td>73% (56)</td><td>55% (57)</td><td>83% (44)</td><td>67% (63)</td><td class=grp>20% (61)</td><td>68% (64)</td><td>70% (65)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>4% (58) [4%]</td><td>1% (75)</td><td>2% (91)</td><td>13% (51)</td><td>47% (53)</td><td>2% (85)</td><td class=grp>2% (72)</td><td>2% (69)</td><td>0% (83)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>6% (82) [6%]</td><td>5% (83)</td><td>5% (86)</td><td>18% (76)</td><td>12% (80)</td><td>3% (79)</td><td class=grp>0% (20)</td><td>5% (76)</td><td>5% (85)</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>94% (34) [96%]</td><td>96% (33)</td><td>97% (34)</td><td>82% (46)</td><td>76% (31)</td><td>96% (30)</td><td class=grp>0%</td><td>95% (32)</td><td>96% (33)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>90% (50) [90%]</td><td>90% (50)</td><td>90% (49)</td><td>90% (49)</td><td>88% (45)</td><td>92% (51)</td><td class=grp>0%</td><td>90% (50)</td><td>91% (51)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>91% (45) [92%]</td><td>91% (45)</td><td>92% (44)</td><td>90% (48)</td><td>87% (47)</td><td>92% (49)</td><td class=grp>0%</td><td>91% (46)</td><td>92% (45)</td></tr>
+<tr><td>Modified pipeline</td><td>feet</td><td>TC</td><td>95% (34) [96%]</td><td>96% (33)</td><td>97% (34)</td><td>83% (46)</td><td>97% (33)</td><td>96% (30)</td><td class=grp>55% (31)</td><td>95% (32)</td><td>96% (33)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>7% (77) [7%]</td><td>3% (86)</td><td>10% (83)</td><td>6% (70)</td><td>30% (58)</td><td>4% (82)</td><td class=grp>0% (100)</td><td>4% (84)</td><td>3% (86)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>66% (58) [68%]</td><td>71% (60)</td><td>63% (57)</td><td>74% (47)</td><td>33% (67)</td><td>62% (66)</td><td class=grp>41% (53)</td><td>65% (61)</td><td>72% (60)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>66% (58) [68%]</td><td>71% (60)</td><td>63% (57)</td><td>74% (47)</td><td>33% (67)</td><td>62% (66)</td><td class=grp>41% (53)</td><td>65% (61)</td><td>72% (60)</td></tr>
 </tbody></table></div>
 <h4>WMCG</h4>
-<div class="tw"><table class="ev"><thead><tr><th rowspan="2">detector</th><th rowspan="2">sensor</th><th rowspan="2">event</th><th colspan="5">by activity</th><th colspan="3" class="grp">level walking, by position</th></tr><tr><th>overall</th><th>level walking</th><th>stairs up</th><th>stairs down</th><th>stair trials, level parts</th><th class=grp>first/last step</th><th>turning</th><th>straight</th></tr></thead><tbody>
-<tr><td>Rampp</td><td>feet</td><td>IC</td><td>70% (38)</td><td>83% (28)</td><td>75% (67)</td><td>30% (61)</td><td>48% (55)</td><td class=grp>8% (23)</td><td>90% (32)</td><td>100% (21)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>IC</td><td>77% (22)</td><td>81% (15)</td><td>84% (40)</td><td>78% (29)</td><td>53% (35)</td><td class=grp>8% (13)</td><td>88% (16)</td><td>99% (12)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>IC</td><td>11% (36)</td><td>9% (41)</td><td>15% (28)</td><td>17% (31)</td><td>11% (35)</td><td class=grp>2% (50)</td><td>11% (39)</td><td>6% (48)</td></tr>
-<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>84% (44)</td><td>88% (47)</td><td>95% (38)</td><td>96% (31)</td><td>52% (51)</td><td class=grp>85% (41)</td><td>86% (47)</td><td>95% (47)</td></tr>
-<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>75% (50)</td><td>75% (55)</td><td>89% (52)</td><td>95% (28)</td><td>46% (49)</td><td class=grp>69% (54)</td><td>73% (54)</td><td>82% (57)</td></tr>
-<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>76% (50)</td><td>80% (60)</td><td>90% (38)</td><td>97% (24)</td><td>35% (41)</td><td class=grp>78% (57)</td><td>77% (60)</td><td>89% (63)</td></tr>
-<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>11% (54)</td><td>6% (55)</td><td>2% (70)</td><td>6% (75)</td><td>40% (50)</td><td class=grp>2% (65)</td><td>10% (55)</td><td>0%</td></tr>
-<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>2% (66)</td><td>2% (62)</td><td>0%</td><td>1% (95)</td><td>7% (67)</td><td class=grp>0%</td><td>3% (62)</td><td>0%</td></tr>
-<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>60% (34)</td><td>79% (32)</td><td>13% (44)</td><td>47% (49)</td><td>37% (32)</td><td class=grp>2% (30)</td><td>87% (34)</td><td>96% (27)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>TC</td><td>69% (47)</td><td>79% (52)</td><td>87% (49)</td><td>49% (18)</td><td>34% (37)</td><td class=grp>1% (60)</td><td>89% (50)</td><td>94% (56)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>TC</td><td>71% (42)</td><td>80% (45)</td><td>88% (54)</td><td>53% (15)</td><td>42% (34)</td><td class=grp>2% (30)</td><td>89% (44)</td><td>92% (47)</td></tr>
-<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>3% (77)</td><td>3% (72)</td><td>0% (60)</td><td>9% (85)</td><td>1% (73)</td><td class=grp>6% (77)</td><td>3% (68)</td><td>2% (82)</td></tr>
-<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>57% (47)</td><td>68% (50)</td><td>96% (29)</td><td>28% (63)</td><td>8% (48)</td><td class=grp>56% (49)</td><td>67% (49)</td><td>78% (52)</td></tr>
-<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>57% (47)</td><td>68% (50)</td><td>96% (29)</td><td>28% (63)</td><td>8% (48)</td><td class=grp>56% (49)</td><td>67% (49)</td><td>78% (52)</td></tr>
+<div class="tw"><table class="ev"><thead><tr><th rowspan="2">detector</th><th rowspan="2">sensor</th><th rowspan="2">event</th><th colspan="4">by activity</th><th colspan="3" class="grp">level walking, by position</th></tr><tr><th>overall</th><th>level walking</th><th>stairs up</th><th>stairs down</th><th class=grp>first/last step</th><th>turning</th><th>straight</th></tr></thead><tbody>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>74% (36) [89%]</td><td>83% (28)</td><td>75% (67)</td><td>30% (61)</td><td class=grp>8% (23)</td><td>88% (35)</td><td>95% (26)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>81% (21) [92%]</td><td>81% (15)</td><td>84% (40)</td><td>78% (29)</td><td class=grp>8% (13)</td><td>83% (17)</td><td>95% (14)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>11% (36) [13%]</td><td>9% (41)</td><td>15% (28)</td><td>17% (31)</td><td class=grp>2% (50)</td><td>15% (27)</td><td>8% (51)</td></tr>
+<tr><td>Modified pipeline</td><td>feet</td><td>IC</td><td>83% (37) [87%]</td><td>89% (29)</td><td>89% (68)</td><td>47% (60)</td><td class=grp>55% (35)</td><td>90% (34)</td><td>95% (26)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>90% (43) [83%]</td><td>88% (47)</td><td>95% (38)</td><td>96% (31)</td><td class=grp>85% (41)</td><td>80% (52)</td><td>92% (46)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>80% (50) [76%]</td><td>75% (55)</td><td>89% (52)</td><td>95% (28)</td><td class=grp>69% (54)</td><td>57% (63)</td><td>84% (53)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>84% (51) [82%]</td><td>80% (60)</td><td>90% (38)</td><td>97% (24)</td><td class=grp>78% (57)</td><td>64% (64)</td><td>87% (60)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>6% (59) [10%]</td><td>6% (55)</td><td>2% (70)</td><td>6% (75)</td><td class=grp>2% (65)</td><td>15% (54)</td><td>4% (57)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>2% (65) [2%]</td><td>2% (62)</td><td>0%</td><td>1% (95)</td><td class=grp>0%</td><td>2% (60)</td><td>2% (62)</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>65% (34) [78%]</td><td>79% (32)</td><td>13% (44)</td><td>47% (49)</td><td class=grp>2% (30)</td><td>80% (38)</td><td>93% (30)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>76% (48) [85%]</td><td>79% (52)</td><td>87% (49)</td><td>49% (18)</td><td class=grp>1% (60)</td><td>80% (42)</td><td>94% (55)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>77% (43) [83%]</td><td>80% (45)</td><td>88% (54)</td><td>53% (15)</td><td class=grp>2% (30)</td><td>81% (38)</td><td>94% (47)</td></tr>
+<tr><td>Modified pipeline</td><td>feet</td><td>TC</td><td>71% (35) [76%]</td><td>85% (32)</td><td>17% (44)</td><td>57% (48)</td><td class=grp>50% (36)</td><td>79% (38)</td><td>94% (30)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>4% (77) [4%]</td><td>3% (72)</td><td>0% (60)</td><td>9% (85)</td><td class=grp>6% (77)</td><td>4% (60)</td><td>2% (82)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>66% (47) [65%]</td><td>68% (50)</td><td>96% (29)</td><td>28% (63)</td><td class=grp>56% (49)</td><td>37% (47)</td><td>82% (51)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>66% (47) [65%]</td><td>68% (50)</td><td>96% (29)</td><td>28% (63)</td><td class=grp>56% (49)</td><td>37% (47)</td><td>82% (51)</td></tr>
 </tbody></table></div>
 <h4>WearPD-Gait: walkway</h4>
 <div class="tw"><table class="ev"><thead><tr><th rowspan="2">detector</th><th rowspan="2">sensor</th><th rowspan="2">event</th><th colspan="3">by activity</th><th colspan="2" class="grp">level walking, by position</th></tr><tr><th>overall</th><th>walking</th><th>turns</th><th class=grp>first/last step</th><th>straight</th></tr></thead><tbody>
-<tr><td>Rampp</td><td>feet</td><td>IC</td><td>81% (39)</td><td>85% (37)</td><td>73% (43)</td><td class=grp>78% (35)</td><td>98% (40)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>IC</td><td>78% (20)</td><td>80% (19)</td><td>73% (22)</td><td class=grp>74% (18)</td><td>92% (21)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>IC</td><td>29% (35)</td><td>31% (35)</td><td>26% (33)</td><td class=grp>31% (36)</td><td>31% (35)</td></tr>
-<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>78% (38)</td><td>89% (35)</td><td>55% (47)</td><td class=grp>89% (35)</td><td>87% (34)</td></tr>
-<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>69% (41)</td><td>80% (39)</td><td>48% (49)</td><td class=grp>77% (40)</td><td>86% (35)</td></tr>
-<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>77% (41)</td><td>86% (39)</td><td>60% (46)</td><td class=grp>83% (40)</td><td>92% (37)</td></tr>
-<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>30% (58)</td><td>22% (63)</td><td>49% (54)</td><td class=grp>18% (67)</td><td>29% (59)</td></tr>
-<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>7% (62)</td><td>3% (73)</td><td>16% (59)</td><td class=grp>2% (70)</td><td>5% (75)</td></tr>
-<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>80% (12)</td><td>85% (10)</td><td>71% (18)</td><td class=grp>79% (10)</td><td>99% (10)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>TC</td><td>78% (63)</td><td>84% (62)</td><td>67% (65)</td><td class=grp>78% (61)</td><td>96% (63)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>TC</td><td>80% (60)</td><td>85% (59)</td><td>71% (64)</td><td class=grp>80% (58)</td><td>96% (60)</td></tr>
-<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>9% (64)</td><td>6% (65)</td><td>13% (64)</td><td class=grp>6% (70)</td><td>7% (57)</td></tr>
-<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>60% (59)</td><td>71% (58)</td><td>41% (59)</td><td class=grp>69% (58)</td><td>74% (59)</td></tr>
-<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>60% (59)</td><td>71% (58)</td><td>41% (59)</td><td class=grp>69% (58)</td><td>74% (59)</td></tr>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>81% (39) [92%]</td><td>85% (37)</td><td>73% (43)</td><td class=grp>78% (35)</td><td>98% (40)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>78% (20) [87%]</td><td>80% (19)</td><td>73% (22)</td><td class=grp>74% (18)</td><td>92% (21)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>29% (35) [34%]</td><td>31% (35)</td><td>26% (33)</td><td class=grp>31% (36)</td><td>31% (35)</td></tr>
+<tr><td>Modified pipeline</td><td>feet</td><td>IC</td><td>88% (38) [91%]</td><td>94% (37)</td><td>76% (43)</td><td class=grp>92% (35)</td><td>98% (40)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>78% (38) [76%]</td><td>89% (35)</td><td>55% (47)</td><td class=grp>89% (35)</td><td>87% (34)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>69% (41) [72%]</td><td>80% (39)</td><td>48% (49)</td><td class=grp>77% (40)</td><td>86% (35)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>77% (41) [76%]</td><td>86% (39)</td><td>60% (46)</td><td class=grp>83% (40)</td><td>92% (37)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>30% (58) [27%]</td><td>22% (63)</td><td>49% (54)</td><td class=grp>18% (67)</td><td>29% (59)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>7% (62) [6%]</td><td>3% (73)</td><td>16% (59)</td><td class=grp>2% (70)</td><td>5% (75)</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>80% (12) [92%]</td><td>85% (10)</td><td>71% (18)</td><td class=grp>79% (10)</td><td>99% (10)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>78% (63) [88%]</td><td>84% (62)</td><td>67% (65)</td><td class=grp>78% (61)</td><td>96% (63)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>80% (60) [88%]</td><td>85% (59)</td><td>71% (64)</td><td class=grp>80% (58)</td><td>96% (60)</td></tr>
+<tr><td>Modified pipeline</td><td>feet</td><td>TC</td><td>87% (13) [91%]</td><td>94% (11)</td><td>74% (19)</td><td class=grp>92% (11)</td><td>99% (10)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>9% (64) [10%]</td><td>6% (65)</td><td>13% (64)</td><td class=grp>6% (70)</td><td>7% (57)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>60% (59) [66%]</td><td>71% (58)</td><td>41% (59)</td><td class=grp>69% (58)</td><td>74% (59)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>60% (59) [66%]</td><td>71% (58)</td><td>41% (59)</td><td class=grp>69% (58)</td><td>74% (59)</td></tr>
 </tbody></table></div>
 <h4>WearPD-Gait: free walking</h4>
 <div class="tw"><table class="ev"><thead><tr><th rowspan="2">detector</th><th rowspan="2">sensor</th><th rowspan="2">event</th><th colspan="5">by activity</th><th colspan="2" class="grp">level walking, by position</th></tr><tr><th>overall</th><th>walking</th><th>turns</th><th>stairs up</th><th>stairs down</th><th class=grp>first/last step</th><th>straight</th></tr></thead><tbody>
-<tr><td>Rampp</td><td>feet</td><td>IC</td><td>90% (32)</td><td>92% (32)</td><td>74% (38)</td><td>64% (37)</td><td>65% (44)</td><td class=grp>77% (31)</td><td>94% (32)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>IC</td><td>89% (27)</td><td>90% (27)</td><td>81% (34)</td><td>79% (30)</td><td>85% (28)</td><td class=grp>70% (28)</td><td>93% (27)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>IC</td><td>25% (46)</td><td>25% (46)</td><td>32% (42)</td><td>27% (51)</td><td>31% (44)</td><td class=grp>25% (46)</td><td>25% (46)</td></tr>
-<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>86% (36)</td><td>87% (36)</td><td>66% (44)</td><td>77% (45)</td><td>74% (45)</td><td class=grp>80% (40)</td><td>88% (35)</td></tr>
-<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>85% (40)</td><td>86% (39)</td><td>55% (50)</td><td>67% (46)</td><td>71% (44)</td><td class=grp>72% (45)</td><td>88% (39)</td></tr>
-<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>86% (44)</td><td>87% (44)</td><td>63% (39)</td><td>66% (44)</td><td>75% (43)</td><td class=grp>77% (47)</td><td>89% (44)</td></tr>
-<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>17% (59)</td><td>17% (60)</td><td>31% (55)</td><td>18% (57)</td><td>19% (55)</td><td class=grp>18% (64)</td><td>17% (59)</td></tr>
-<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>4% (62)</td><td>3% (60)</td><td>12% (67)</td><td>5% (73)</td><td>7% (72)</td><td class=grp>4% (62)</td><td>3% (60)</td></tr>
-<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>83% (34)</td><td>85% (34)</td><td>68% (36)</td><td>59% (37)</td><td>52% (39)</td><td class=grp>71% (34)</td><td>87% (34)</td></tr>
-<tr><td>Herzer</td><td>feet</td><td>TC</td><td>59% (61)</td><td>59% (61)</td><td>52% (60)</td><td>45% (60)</td><td>51% (54)</td><td class=grp>45% (60)</td><td>62% (61)</td></tr>
-<tr><td>Roth</td><td>feet</td><td>TC</td><td>64% (59)</td><td>65% (59)</td><td>56% (61)</td><td>48% (65)</td><td>54% (61)</td><td class=grp>54% (58)</td><td>66% (59)</td></tr>
-<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>4% (60)</td><td>4% (61)</td><td>5% (70)</td><td>6% (37)</td><td>10% (64)</td><td class=grp>4% (57)</td><td>3% (62)</td></tr>
-<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>72% (49)</td><td>74% (49)</td><td>42% (45)</td><td>66% (50)</td><td>62% (53)</td><td class=grp>60% (46)</td><td>75% (49)</td></tr>
-<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>72% (49)</td><td>74% (49)</td><td>42% (45)</td><td>66% (50)</td><td>62% (53)</td><td class=grp>60% (46)</td><td>75% (49)</td></tr>
+<tr><td>Rampp</td><td>feet</td><td>IC</td><td>90% (32) [89%]</td><td>92% (32)</td><td>74% (38)</td><td>64% (37)</td><td>65% (44)</td><td class=grp>77% (31)</td><td>94% (32)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>IC</td><td>89% (27) [88%]</td><td>90% (27)</td><td>81% (34)</td><td>79% (30)</td><td>85% (28)</td><td class=grp>70% (28)</td><td>93% (27)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>IC</td><td>25% (46) [27%]</td><td>25% (46)</td><td>32% (42)</td><td>27% (51)</td><td>31% (44)</td><td class=grp>25% (46)</td><td>25% (46)</td></tr>
+<tr><td>Modified pipeline</td><td>feet</td><td>IC</td><td>92% (32) [89%]</td><td>93% (32)</td><td>73% (38)</td><td>74% (40)</td><td>72% (44)</td><td class=grp>82% (30)</td><td>95% (32)</td></tr>
+<tr><td>IcdIonescu</td><td>pelvis</td><td>IC</td><td>86% (36) [80%]</td><td>87% (36)</td><td>66% (44)</td><td>77% (45)</td><td>74% (45)</td><td class=grp>80% (40)</td><td>88% (35)</td></tr>
+<tr><td>IcdShinImproved</td><td>pelvis</td><td>IC</td><td>85% (40) [79%]</td><td>86% (39)</td><td>55% (50)</td><td>67% (46)</td><td>71% (44)</td><td class=grp>72% (45)</td><td>88% (39)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>IC</td><td>86% (44) [80%]</td><td>87% (44)</td><td>63% (39)</td><td>66% (44)</td><td>75% (43)</td><td class=grp>77% (47)</td><td>89% (44)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>IC</td><td>17% (59) [15%]</td><td>17% (60)</td><td>31% (55)</td><td>18% (57)</td><td>19% (55)</td><td class=grp>18% (64)</td><td>17% (59)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>IC</td><td>4% (62) [4%]</td><td>3% (60)</td><td>12% (67)</td><td>5% (73)</td><td>7% (72)</td><td class=grp>4% (62)</td><td>3% (60)</td></tr>
+<tr class="sep"><td>Rampp</td><td>feet</td><td>TC</td><td>83% (34) [82%]</td><td>85% (34)</td><td>68% (36)</td><td>59% (37)</td><td>52% (39)</td><td class=grp>71% (34)</td><td>87% (34)</td></tr>
+<tr><td>Herzer</td><td>feet</td><td>TC</td><td>59% (61) [58%]</td><td>59% (61)</td><td>52% (60)</td><td>45% (60)</td><td>51% (54)</td><td class=grp>45% (60)</td><td>62% (61)</td></tr>
+<tr><td>Roth</td><td>feet</td><td>TC</td><td>64% (59) [62%]</td><td>65% (59)</td><td>56% (61)</td><td>48% (65)</td><td>54% (61)</td><td class=grp>54% (58)</td><td>66% (59)</td></tr>
+<tr><td>Modified pipeline</td><td>feet</td><td>TC</td><td>85% (34) [83%]</td><td>86% (34)</td><td>74% (37)</td><td>71% (41)</td><td>58% (39)</td><td class=grp>77% (34)</td><td>88% (34)</td></tr>
+<tr><td>McCamley gauss1 (zc)</td><td>pelvis</td><td>TC</td><td>4% (60) [4%]</td><td>4% (61)</td><td>5% (70)</td><td>6% (37)</td><td>10% (64)</td><td class=grp>4% (57)</td><td>3% (62)</td></tr>
+<tr><td>McCamley gauss2 (zc)</td><td>pelvis</td><td>TC</td><td>72% (49) [72%]</td><td>74% (49)</td><td>42% (45)</td><td>66% (50)</td><td>62% (53)</td><td class=grp>60% (46)</td><td>75% (49)</td></tr>
+<tr><td>McCamley gauss2 (peaks)</td><td>pelvis</td><td>TC</td><td>72% (49) [72%]</td><td>74% (49)</td><td>42% (45)</td><td>66% (50)</td><td>62% (53)</td><td class=grp>60% (46)</td><td>75% (49)</td></tr>
 </tbody></table></div>
 <p class="cap">Overall = all reference events of the activities shown (WearPD-Gait: standing and chair transfers not included). NEWBEE ramps and curbs pool up and down; WMCG level walking pools the three speeds.</p>
 <p class="cap"><b>Stairs up / down.</b> NEWBEE: its walk_mode labels. WMCG: the OpenSim centre of mass rising or falling faster than 0.1 m/s over ±0.5 s around the event (slower = level parts of the stair trials, e.g. landings). WearPD-Gait: each Stairs label covers one ascent and one descent of the same small staircase (dataset supplement, Table S3), so its events before the middle reference IC are up and the rest down.</p>
-<p class="cap"><b>Level walking by position.</b> First/last step: the first and last event of each foot in a walking bout (NEWBEE and WMCG: the trial, i.e. starting and stopping; WearPD-Gait: each Walk label, i.e. the steps next to a turn or a stop). Turning (NEWBEE and WMCG): NEWBEE’s curve and turn-around labels; for WMCG the OpenSim centre-of-mass heading changing faster than 30°/s within ±0.3 s of the event, or the centre of mass slower than 0.3 m/s (turn-around). In WearPD-Gait turns are labelled separately (the turns column). Straight: all other level-walking events.</p>
+<p class="cap"><b>Level walking by position.</b> First/last step: the first and last event of each foot in a walking bout (NEWBEE and WMCG: the trial, i.e. starting and stopping; WearPD-Gait: each Walk label, i.e. the steps next to a turn or a stop). Turning (NEWBEE and WMCG): NEWBEE’s curve and turn-around labels; for WMCG an event inside a reference stride whose direction (the foot’s marker position at its two initial contacts) differs by more than 30° from that foot’s previous stride. In WearPD-Gait turns are labelled separately (the turns column). Straight: all other level-walking events.</p>
+
+<h3>III. ZUPT</h3>
+<p>ZUPT detectors 1–5 of the pipeline, in two conditions: (1) <b>Rampp with gaitmap’s consistency check switched off (<i>enforce_consistency = False</i>)</b>, so a stride keeps its stance point (<i>min_vel</i>) even when its IC or TC is out of order; (2) <b>Modified pipeline</b>: integrates the methods above (WGL CMP, gaitmap, etc.) with custom software and logic. Details will be provided in the paper. Each cell: Found % [inside %]. Figures: one NEWBEE stair descent, Norm gyr.</p>
+<h4>1. Rampp, enforce_consistency = False</h4>
+<div class="fig"><img src="assets/zupt_step1.png" alt="ZUPTs of condition 1 on a NEWBEE stair descent" loading="lazy"></div>
+<h4>NEWBEE</h4>
+<div class="tw"><table><thead><tr><th>ZUPT detector</th><th>overall</th><th>level walking</th><th>ramps</th><th>stairs up</th><th>stairs down</th><th>curbs</th></tr></thead><tbody>
+<tr><td>Norm gyr (NEWBEE default)</td><td>99.7% [99.4%]</td><td>99.7% [99.4%]</td><td>100.0% [99.5%]</td><td>100.0% [99.0%]</td><td>97.5% [99.2%]</td><td>100.0% [99.3%]</td></tr>
+<tr><td>Norm acc</td><td>99.7% [99.9%]</td><td>99.7% [99.8%]</td><td>100.0% [99.9%]</td><td>100.0% [99.7%]</td><td>97.4% [99.7%]</td><td>100.0% [99.8%]</td></tr>
+<tr><td>ARED gyr</td><td>99.7% [99.3%]</td><td>99.7% [99.3%]</td><td>100.0% [99.5%]</td><td>100.0% [98.9%]</td><td>97.5% [99.2%]</td><td>100.0% [99.3%]</td></tr>
+<tr><td>Shoe (Skog)</td><td>99.6% [99.3%]</td><td>99.6% [99.3%]</td><td>100.0% [99.4%]</td><td>100.0% [98.7%]</td><td>97.4% [99.2%]</td><td>100.0% [99.2%]</td></tr>
+<tr><td>Combination (WearPD-Gait default)</td><td>99.6% [99.9%]</td><td>99.6% [99.9%]</td><td>100.0% [100.0%]</td><td>100.0% [99.8%]</td><td>97.5% [99.7%]</td><td>100.0% [99.9%]</td></tr>
+</tbody></table></div>
+<h4>WearPD-Gait: free walking</h4>
+<div class="tw"><table><thead><tr><th>ZUPT detector</th><th>overall</th><th>walking</th><th>turns</th><th>stairs up</th><th>stairs down</th></tr></thead><tbody>
+<tr><td>Norm gyr (NEWBEE default)</td><td>97.8% [95.2%]</td><td>98.0% [95.2%]</td><td>91.3% [96.4%]</td><td>95.8% [95.7%]</td><td>97.1% [94.4%]</td></tr>
+<tr><td>Norm acc</td><td>98.8% [95.2%]</td><td>99.0% [95.3%]</td><td>92.9% [94.0%]</td><td>95.8% [95.6%]</td><td>98.7% [94.1%]</td></tr>
+<tr><td>ARED gyr</td><td>97.8% [95.3%]</td><td>98.0% [95.3%]</td><td>91.3% [96.4%]</td><td>95.8% [95.8%]</td><td>97.1% [94.5%]</td></tr>
+<tr><td>Shoe (Skog)</td><td>97.8% [95.3%]</td><td>98.0% [95.3%]</td><td>91.3% [96.2%]</td><td>95.8% [95.5%]</td><td>97.1% [94.2%]</td></tr>
+<tr><td>Combination (WearPD-Gait default)</td><td>97.4% [94.5%]</td><td>97.6% [94.3%]</td><td>91.3% [96.7%]</td><td>94.7% [96.1%]</td><td>96.8% [94.4%]</td></tr>
+</tbody></table></div>
+<h4>2. Modified pipeline</h4>
+<div class="fig"><img src="assets/zupt_step2.png" alt="ZUPTs of condition 2 on a NEWBEE stair descent" loading="lazy"></div>
+<h4>NEWBEE</h4>
+<div class="tw"><table><thead><tr><th>ZUPT detector</th><th>overall</th><th>level walking</th><th>ramps</th><th>stairs up</th><th>stairs down</th><th>curbs</th></tr></thead><tbody>
+<tr><td>Norm gyr (NEWBEE default)</td><td>99.8% [99.4%]</td><td>99.7% [99.4%]</td><td>100.0% [99.5%]</td><td>100.0% [99.0%]</td><td>99.5% [99.3%]</td><td>100.0% [99.3%]</td></tr>
+<tr><td>Norm acc</td><td>99.9% [99.8%]</td><td>99.8% [99.8%]</td><td>100.0% [99.9%]</td><td>100.0% [99.7%]</td><td>99.5% [99.7%]</td><td>100.0% [99.8%]</td></tr>
+<tr><td>ARED gyr</td><td>99.8% [99.3%]</td><td>99.7% [99.3%]</td><td>100.0% [99.5%]</td><td>100.0% [98.9%]</td><td>99.5% [99.3%]</td><td>100.0% [99.3%]</td></tr>
+<tr><td>Shoe (Skog)</td><td>99.7% [99.3%]</td><td>99.6% [99.3%]</td><td>100.0% [99.4%]</td><td>100.0% [98.7%]</td><td>99.4% [99.2%]</td><td>100.0% [99.2%]</td></tr>
+<tr><td>Combination (WearPD-Gait default)</td><td>99.8% [99.9%]</td><td>99.7% [99.9%]</td><td>100.0% [100.0%]</td><td>100.0% [99.8%]</td><td>99.4% [99.7%]</td><td>100.0% [99.9%]</td></tr>
+</tbody></table></div>
+<h4>WearPD-Gait: free walking</h4>
+<div class="tw"><table><thead><tr><th>ZUPT detector</th><th>overall</th><th>walking</th><th>turns</th><th>stairs up</th><th>stairs down</th></tr></thead><tbody>
+<tr><td>Norm gyr (NEWBEE default)</td><td>97.7% [95.4%]</td><td>97.9% [95.3%]</td><td>91.3% [97.7%]</td><td>96.9% [97.9%]</td><td>96.8% [95.3%]</td></tr>
+<tr><td>Norm acc</td><td>98.7% [95.5%]</td><td>98.9% [95.5%]</td><td>92.3% [95.0%]</td><td>96.9% [97.2%]</td><td>98.4% [94.8%]</td></tr>
+<tr><td>ARED gyr</td><td>97.8% [95.5%]</td><td>97.9% [95.4%]</td><td>91.3% [97.7%]</td><td>96.9% [98.0%]</td><td>96.4% [95.2%]</td></tr>
+<tr><td>Shoe (Skog)</td><td>97.7% [95.5%]</td><td>97.9% [95.4%]</td><td>91.3% [97.7%]</td><td>96.9% [97.9%]</td><td>96.4% [95.1%]</td></tr>
+<tr><td>Combination (WearPD-Gait default)</td><td>97.3% [94.7%]</td><td>97.5% [94.4%]</td><td>91.3% [97.8%]</td><td>95.8% [98.2%]</td><td>96.4% [95.0%]</td></tr>
+</tbody></table></div>
+
+<h3>IV. Ground contact</h3>
+<p>The ground-contact mask gives WGL CMP each foot’s single stance (that foot on the ground, the other not). (1) <b>The WGL floor contact</b>; (2) <b>Modified pipeline</b>: integrates the methods above (WGL CMP, gaitmap, etc.) with custom software and logic. Details will be provided in the paper. Each cell: Found % [inside %]. Figures: one NEWBEE recording, level walking followed by stairs.</p>
+<h4>1. WGL floor contact</h4>
+<div class="fig"><img src="assets/contact_1.png" alt="Ground contact of mask 1 on NEWBEE level walking and stairs" loading="lazy"></div>
+<h4>NEWBEE</h4>
+<div class="tw"><table><thead><tr><th>contact mask</th><th>overall</th><th>level walking</th><th>ramps</th><th>stairs up</th><th>stairs down</th><th>curbs</th></tr></thead><tbody>
+<tr><td>WGL floor contact</td><td>96.9% [99.2%]</td><td>99.6% [99.3%]</td><td>99.8% [99.5%]</td><td>94.5% [97.7%]</td><td>56.6% [98.8%]</td><td>96.5% [99.5%]</td></tr>
+</tbody></table></div>
+<h4>WearPD-Gait: free walking</h4>
+<div class="tw"><table><thead><tr><th>contact mask</th><th>overall</th><th>walking</th><th>turns</th><th>stairs up</th><th>stairs down</th></tr></thead><tbody>
+<tr><td>WGL floor contact</td><td>97.8% [94.9%]</td><td>98.0% [95.0%]</td><td>98.9% [93.7%]</td><td>92.4% [94.7%]</td><td>94.5% [93.3%]</td></tr>
+</tbody></table></div>
+<h4>2. Modified pipeline</h4>
+<div class="fig"><img src="assets/contact_2.png" alt="Ground contact of mask 2 on NEWBEE level walking and stairs" loading="lazy"></div>
+<h4>NEWBEE</h4>
+<div class="tw"><table><thead><tr><th>contact mask</th><th>overall</th><th>level walking</th><th>ramps</th><th>stairs up</th><th>stairs down</th><th>curbs</th></tr></thead><tbody>
+<tr><td>Modified pipeline</td><td>99.9% [99.2%]</td><td>99.8% [99.3%]</td><td>100.0% [99.5%]</td><td>100.0% [97.7%]</td><td>99.5% [98.9%]</td><td>100.0% [99.5%]</td></tr>
+</tbody></table></div>
+<h4>WearPD-Gait: free walking</h4>
+<div class="tw"><table><thead><tr><th>contact mask</th><th>overall</th><th>walking</th><th>turns</th><th>stairs up</th><th>stairs down</th></tr></thead><tbody>
+<tr><td>Modified pipeline</td><td>99.4% [94.9%]</td><td>99.5% [95.0%]</td><td>99.5% [93.6%]</td><td>96.9% [94.7%]</td><td>98.4% [93.3%]</td></tr>
+</tbody></table></div>
+
+<h3>V. Gait metrics</h3>
+<p><b>Base pipeline</b>: using default events, strides, ZUPTs and <i>min_vel</i> events. <b>Modified pipeline</b>: integrates the methods above (WGL CMP, gaitmap, etc.) with custom software and logic. Details will be provided in the paper. <b>Stride</b> (gaitmap, on the WGL CMP foot trajectories, strides from one mid-stance <i>min_vel</i> to the next): stride length = horizontal distance between the stride’s two mid-stance foot positions; stride time = previous IC → IC; stance and swing time from the IC and TC. <b>Step</b>: NEWBEE step distance = horizontal distance between two consecutive mid-stance foot positions of opposite feet, step period = IMU IC → the other foot’s IMU IC, for every step (the pipeline’s own ICs, not matched to the reference). WMCG: step distance and step period as for NEWBEE; step width = the step from one mid-stance foot position to the next of the other foot, across the stance foot’s stride line. <b>MoS</b>: the pipeline’s per-step proxy after Fino et al. <a href="#ref-fino">[8]</a>, the centripetal acceleration (perpendicular to the direction of travel) averaged from one IC to the next, with the direction of travel from the CoM velocity or from the pelvis vertically aligned frame (VAF); its sign is opposite to the reference MoS, so r is negative.</p>
+<h4>NEWBEE: stride</h4>
+<div class="tw"><table class="ev"><thead><tr><th rowspan="2">walking type</th><th rowspan="2">pipeline</th><th rowspan="2">n</th><th colspan="5" class="grp">stride length [cm]</th><th colspan="2" class="grp">stride time [ms]</th></tr><tr><th class="grp">bias (SD)</th><th>r</th><th class="grp">large change n</th><th>r</th><th>same direction</th><th class="grp">bias (SD)</th><th>r</th></tr></thead><tbody>
+<tr class=sep><td>level walking</td><td><b>Base pipeline</b></td><td>34,544</td><td class="grp">-13.8 (14.1)</td><td>0.72</td><td class="grp">2130</td><td>0.90</td><td>93%</td><td class="grp">1 (46)</td><td>0.87</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>34,532</td><td class="grp">-13.9 (12.8)</td><td>0.76</td><td class="grp">2129</td><td>0.92</td><td>93%</td><td class="grp">0 (31)</td><td>0.93</td></tr>
+<tr class=sep><td>ramp up</td><td><b>Base pipeline</b></td><td>8,373</td><td class="grp">-10.0 (12.6)</td><td>0.52</td><td class="grp">907</td><td>0.71</td><td>84%</td><td class="grp">1 (23)</td><td>0.95</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>8,373</td><td class="grp">-10.1 (12.7)</td><td>0.52</td><td class="grp">907</td><td>0.71</td><td>85%</td><td class="grp">1 (23)</td><td>0.95</td></tr>
+<tr class=sep><td>ramp down</td><td><b>Base pipeline</b></td><td>11,422</td><td class="grp">-19.0 (12.7)</td><td>0.60</td><td class="grp">1292</td><td>0.76</td><td>86%</td><td class="grp">0 (17)</td><td>0.97</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>11,422</td><td class="grp">-19.0 (12.7)</td><td>0.60</td><td class="grp">1292</td><td>0.76</td><td>86%</td><td class="grp">0 (17)</td><td>0.97</td></tr>
+<tr class=sep><td>stairs up</td><td><b>Base pipeline</b></td><td>4,622</td><td class="grp">3.0 (19.3)</td><td>0.88</td><td class="grp">572</td><td>0.80</td><td>99%</td><td class="grp">3 (45)</td><td>0.96</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>4,669</td><td class="grp">2.7 (17.0)</td><td>0.90</td><td class="grp">576</td><td>0.82</td><td>99%</td><td class="grp">4 (46)</td><td>0.96</td></tr>
+<tr class=sep><td>stairs down</td><td><b>Base pipeline</b></td><td>2,445</td><td class="grp">-18.5 (25.8)</td><td>0.71</td><td class="grp">295</td><td>0.25</td><td>89%</td><td class="grp">3 (58)</td><td>0.94</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>2,953</td><td class="grp">-21.1 (14.0)</td><td>0.90</td><td class="grp">358</td><td>0.65</td><td>100%</td><td class="grp">6 (67)</td><td>0.94</td></tr>
+<tr class=sep><td>curbs up</td><td><b>Base pipeline</b></td><td>397</td><td class="grp">-15.9 (14.6)</td><td>0.57</td><td class="grp">54</td><td>0.76</td><td>89%</td><td class="grp">2 (21)</td><td>0.96</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>397</td><td class="grp">-16.0 (14.6)</td><td>0.56</td><td class="grp">54</td><td>0.75</td><td>87%</td><td class="grp">2 (21)</td><td>0.96</td></tr>
+<tr class=sep><td>curbs down</td><td><b>Base pipeline</b></td><td>384</td><td class="grp">-19.7 (14.7)</td><td>0.51</td><td class="grp">48</td><td>0.71</td><td>83%</td><td class="grp">6 (22)</td><td>0.96</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>384</td><td class="grp">-19.7 (13.6)</td><td>0.54</td><td class="grp">48</td><td>0.74</td><td>83%</td><td class="grp">6 (22)</td><td>0.96</td></tr>
+</tbody></table></div>
+<h4>NEWBEE: step</h4>
+<div class="tw"><table class="ev"><thead><tr><th rowspan="2">walking type</th><th rowspan="2">pipeline</th><th rowspan="2">n</th><th colspan="5" class="grp">step distance [cm]</th><th colspan="2" class="grp">step period [ms]</th></tr><tr><th class="grp">bias (SD)</th><th>r</th><th class="grp">large change n</th><th>r</th><th>same direction</th><th class="grp">bias (SD)</th><th>r</th></tr></thead><tbody>
+<tr class=sep><td>level walking</td><td><b>Base pipeline</b></td><td>34,822</td><td class="grp">-5.9 (9.5)</td><td>0.56</td><td class="grp">2401</td><td>0.84</td><td>84%</td><td class="grp">0 (44)</td><td>0.64</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>34,883</td><td class="grp">-6.0 (9.5)</td><td>0.57</td><td class="grp">2412</td><td>0.85</td><td>84%</td><td class="grp">0 (46)</td><td>0.63</td></tr>
+<tr class=sep><td>ramp up</td><td><b>Base pipeline</b></td><td>8,383</td><td class="grp">-4.7 (9.8)</td><td>0.35</td><td class="grp">880</td><td>0.53</td><td>75%</td><td class="grp">0 (44)</td><td>0.63</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>8,383</td><td class="grp">-4.8 (9.8)</td><td>0.35</td><td class="grp">880</td><td>0.52</td><td>76%</td><td class="grp">0 (44)</td><td>0.63</td></tr>
+<tr class=sep><td>ramp down</td><td><b>Base pipeline</b></td><td>11,453</td><td class="grp">-7.5 (10.3)</td><td>0.40</td><td class="grp">1104</td><td>0.59</td><td>78%</td><td class="grp">0 (43)</td><td>0.60</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>11,455</td><td class="grp">-7.6 (10.3)</td><td>0.40</td><td class="grp">1100</td><td>0.60</td><td>78%</td><td class="grp">0 (43)</td><td>0.60</td></tr>
+<tr class=sep><td>stairs up</td><td><b>Base pipeline</b></td><td>4,771</td><td class="grp">2.2 (13.0)</td><td>0.80</td><td class="grp">623</td><td>0.72</td><td>96%</td><td class="grp">2 (71)</td><td>0.73</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>4,876</td><td class="grp">1.9 (12.4)</td><td>0.82</td><td class="grp">639</td><td>0.72</td><td>97%</td><td class="grp">2 (73)</td><td>0.72</td></tr>
+<tr class=sep><td>stairs down</td><td><b>Base pipeline</b></td><td>2,463</td><td class="grp">-6.0 (16.0)</td><td>0.65</td><td class="grp">330</td><td>0.37</td><td>98%</td><td class="grp">12 (122)</td><td>0.44</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>3,406</td><td class="grp">-9.2 (10.3)</td><td>0.80</td><td class="grp">489</td><td>0.32</td><td>99%</td><td class="grp">11 (123)</td><td>0.50</td></tr>
+<tr class=sep><td>curbs up</td><td><b>Base pipeline</b></td><td>402</td><td class="grp">-7.9 (10.3)</td><td>0.43</td><td class="grp">46</td><td>0.60</td><td>83%</td><td class="grp">2 (35)</td><td>0.73</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>402</td><td class="grp">-7.9 (10.2)</td><td>0.42</td><td class="grp">46</td><td>0.60</td><td>78%</td><td class="grp">2 (35)</td><td>0.73</td></tr>
+<tr class=sep><td>curbs down</td><td><b>Base pipeline</b></td><td>391</td><td class="grp">-7.5 (14.0)</td><td>0.23</td><td class="grp">47</td><td>0.14</td><td>55%</td><td class="grp">5 (45)</td><td>0.73</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>393</td><td class="grp">-7.9 (12.2)</td><td>0.29</td><td class="grp">46</td><td>0.25</td><td>59%</td><td class="grp">5 (45)</td><td>0.73</td></tr>
+</tbody></table></div>
+<p class="cap">Step distance leaves out the steps whose IMU value differs from the reference by more than 50 cm (short runaways of the WGL foot positions, most of them in a few participants on stairs down). Base pipeline: 303 steps, stairs-down r with them included 0.27; Modified pipeline: 69 steps, stairs-down r with them included 0.26.</p>
+<h4>NEWBEE: mediolateral margin of stability</h4>
+<div class="tw"><table class="ev"><thead><tr><th rowspan="2">walking type</th><th rowspan="2">pipeline</th><th colspan="2" class="grp">proxy, CoM-velocity heading: r</th><th colspan="2" class="grp">proxy, VAF: r</th></tr><tr><th class="grp">at IC</th><th>at mid-stance</th><th class="grp">at IC</th><th>at mid-stance</th></tr></thead><tbody>
+<tr class=sep><td>level walking</td><td><b>Base pipeline</b></td><td class=grp>-0.61</td><td>-0.81</td><td class=grp>-0.71</td><td>-0.83</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.61</td><td>-0.81</td><td class=grp>-0.71</td><td>-0.83</td></tr>
+<tr class=sep><td>ramp up</td><td><b>Base pipeline</b></td><td class=grp>-0.59</td><td>-0.83</td><td class=grp>-0.63</td><td>-0.84</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.59</td><td>-0.83</td><td class=grp>-0.63</td><td>-0.84</td></tr>
+<tr class=sep><td>ramp down</td><td><b>Base pipeline</b></td><td class=grp>-0.64</td><td>-0.80</td><td class=grp>-0.73</td><td>-0.83</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.64</td><td>-0.80</td><td class=grp>-0.73</td><td>-0.83</td></tr>
+<tr class=sep><td>stairs up</td><td><b>Base pipeline</b></td><td class=grp>-0.59</td><td>-0.82</td><td class=grp>-0.61</td><td>-0.83</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.58</td><td>-0.82</td><td class=grp>-0.61</td><td>-0.83</td></tr>
+<tr class=sep><td>stairs down</td><td><b>Base pipeline</b></td><td class=grp>-0.66</td><td>-0.69</td><td class=grp>-0.69</td><td>-0.71</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.74</td><td>-0.76</td><td class=grp>-0.77</td><td>-0.79</td></tr>
+<tr class=sep><td>curbs up</td><td><b>Base pipeline</b></td><td class=grp>-0.63</td><td>-0.79</td><td class=grp>-0.68</td><td>-0.81</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.63</td><td>-0.79</td><td class=grp>-0.68</td><td>-0.81</td></tr>
+<tr class=sep><td>curbs down</td><td><b>Base pipeline</b></td><td class=grp>-0.74</td><td>-0.77</td><td class=grp>-0.80</td><td>-0.80</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.74</td><td>-0.77</td><td class=grp>-0.80</td><td>-0.80</td></tr>
+</tbody></table></div>
+<h4>WMCG: stride</h4>
+<div class="tw"><table class="ev"><thead><tr><th rowspan="2">walking type</th><th rowspan="2">turns</th><th rowspan="2">pipeline</th><th rowspan="2">n</th><th colspan="5" class="grp">stride length [cm]</th><th colspan="2" class="grp">stride time [ms]</th><th colspan="2" class="grp">stance time [ms]</th><th colspan="2" class="grp">swing time [ms]</th></tr><tr><th class="grp">bias (SD)</th><th>r</th><th class="grp">large change n</th><th>r</th><th>same direction</th><th class="grp">bias (SD)</th><th>r</th><th class="grp">bias (SD)</th><th>r</th><th class="grp">bias (SD)</th><th>r</th></tr></thead><tbody>
+<tr class=sep><td>level walking</td><td>with</td><td><b>Base pipeline</b></td><td>814</td><td class="grp">-7.1 (20.5)</td><td>0.82</td><td class="grp">89</td><td>0.68</td><td>97%</td><td class="grp">27 (221)</td><td>0.76</td><td class="grp">37 (226)</td><td>0.67</td><td class="grp">-11 (58)</td><td>0.73</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>807</td><td class="grp">-7.3 (17.6)</td><td>0.86</td><td class="grp">85</td><td>0.36</td><td>99%</td><td class="grp">4 (121)</td><td>0.89</td><td class="grp">12 (110)</td><td>0.87</td><td class="grp">-9 (74)</td><td>0.61</td></tr>
+<tr><td></td><td>without</td><td><b>Base pipeline</b></td><td>602</td><td class="grp">-6.9 (16.5)</td><td>0.81</td><td class="grp">53</td><td>0.81</td><td>98%</td><td class="grp">15 (158)</td><td>0.85</td><td class="grp">26 (162)</td><td>0.77</td><td class="grp">-11 (43)</td><td>0.83</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>596</td><td class="grp">-7.2 (12.0)</td><td>0.89</td><td class="grp">56</td><td>0.91</td><td>98%</td><td class="grp">-2 (46)</td><td>0.98</td><td class="grp">9 (54)</td><td>0.96</td><td class="grp">-11 (35)</td><td>0.88</td></tr>
+<tr class=sep><td>stairs up</td><td>with</td><td><b>Base pipeline</b></td><td>154</td><td class="grp">-7.1 (14.4)</td><td>0.56</td><td class="grp">19</td><td>0.48</td><td>74%</td><td class="grp">13 (199)</td><td>0.82</td><td class="grp">103 (215)</td><td>0.76</td><td class="grp">-90 (87)</td><td>0.40</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>168</td><td class="grp">-7.6 (11.8)</td><td>0.65</td><td class="grp">23</td><td>0.68</td><td>78%</td><td class="grp">-11 (59)</td><td>0.98</td><td class="grp">69 (79)</td><td>0.95</td><td class="grp">-79 (59)</td><td>0.70</td></tr>
+<tr><td></td><td>without</td><td><b>Base pipeline</b></td><td>134</td><td class="grp">-7.3 (10.4)</td><td>0.67</td><td class="grp">16</td><td>0.89</td><td>75%</td><td class="grp">-8 (48)</td><td>0.98</td><td class="grp">90 (97)</td><td>0.91</td><td class="grp">-97 (87)</td><td>0.40</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>145</td><td class="grp">-7.5 (10.2)</td><td>0.69</td><td class="grp">18</td><td>0.91</td><td>78%</td><td class="grp">-9 (58)</td><td>0.97</td><td class="grp">77 (77)</td><td>0.95</td><td class="grp">-86 (54)</td><td>0.74</td></tr>
+<tr class=sep><td>stairs down</td><td>with</td><td><b>Base pipeline</b></td><td>59</td><td class="grp">-2.3 (43.7)</td><td>-0.17</td><td class="grp">4</td><td>0.87</td><td>75%</td><td class="grp">-74 (678)</td><td>0.10</td><td class="grp">139 (649)</td><td>0.20</td><td class="grp">-246 (297)</td><td>-0.49</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>86</td><td class="grp">-7.8 (17.3)</td><td>0.14</td><td class="grp">8</td><td>0.30</td><td>62%</td><td class="grp">-15 (361)</td><td>0.71</td><td class="grp">145 (430)</td><td>0.61</td><td class="grp">-183 (269)</td><td>-0.04</td></tr>
+<tr><td></td><td>without</td><td><b>Base pipeline</b></td><td>37</td><td class="grp">-8.8 (17.9)</td><td>0.39</td><td class="grp">0</td><td>–</td><td>–</td><td class="grp">-178 (439)</td><td>0.27</td><td class="grp">-29 (346)</td><td>0.63</td><td class="grp">-149 (258)</td><td>-0.56</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>57</td><td class="grp">-8.7 (13.9)</td><td>0.33</td><td class="grp">0</td><td>–</td><td>–</td><td class="grp">-40 (80)</td><td>0.97</td><td class="grp">121 (260)</td><td>0.83</td><td class="grp">-161 (253)</td><td>-0.01</td></tr>
+</tbody></table></div>
+<h4>WMCG: step</h4>
+<div class="tw"><table class="ev"><thead><tr><th rowspan="2">walking type</th><th rowspan="2">turns</th><th rowspan="2">pipeline</th><th rowspan="2">n</th><th colspan="5" class="grp">step distance [cm]</th><th colspan="2" class="grp">step period [ms]</th><th colspan="5" class="grp">step width [cm]</th></tr><tr><th class="grp">bias (SD)</th><th>r</th><th class="grp">large change n</th><th>r</th><th>same direction</th><th class="grp">bias (SD)</th><th>r</th><th class="grp">bias (SD)</th><th>r</th><th class="grp">large change n</th><th>r</th><th>same direction</th></tr></thead><tbody>
+<tr class=sep><td>level walking</td><td>with</td><td><b>Base pipeline</b></td><td>831</td><td class="grp">-2.6 (13.7)</td><td>0.64</td><td class="grp">99</td><td>0.64</td><td>93%</td><td class="grp">1 (75)</td><td>0.86</td><td class="grp">1.0 (8.9)</td><td>0.49</td><td class="grp">71</td><td>0.58</td><td>73%</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>873</td><td class="grp">-2.6 (12.0)</td><td>0.71</td><td class="grp">107</td><td>0.56</td><td>95%</td><td class="grp">8 (107)</td><td>0.75</td><td class="grp">1.0 (9.0)</td><td>0.47</td><td class="grp">72</td><td>0.59</td><td>75%</td></tr>
+<tr><td></td><td>without</td><td><b>Base pipeline</b></td><td>622</td><td class="grp">-2.2 (10.9)</td><td>0.73</td><td class="grp">72</td><td>0.69</td><td>94%</td><td class="grp">3 (45)</td><td>0.94</td><td class="grp">1.2 (9.3)</td><td>0.42</td><td class="grp">58</td><td>0.52</td><td>78%</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>643</td><td class="grp">-2.1 (10.5)</td><td>0.76</td><td class="grp">80</td><td>0.70</td><td>94%</td><td class="grp">3 (48)</td><td>0.93</td><td class="grp">1.3 (9.5)</td><td>0.38</td><td class="grp">53</td><td>0.51</td><td>79%</td></tr>
+<tr class=sep><td>stairs up</td><td>with</td><td><b>Base pipeline</b></td><td>172</td><td class="grp">-3.6 (9.5)</td><td>0.41</td><td class="grp">25</td><td>0.51</td><td>72%</td><td class="grp">-1 (59)</td><td>0.91</td><td class="grp">-4.3 (5.4)</td><td>0.44</td><td class="grp">10</td><td>0.47</td><td>70%</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>187</td><td class="grp">-3.6 (9.4)</td><td>0.44</td><td class="grp">26</td><td>0.55</td><td>73%</td><td class="grp">-1 (58)</td><td>0.91</td><td class="grp">-3.3 (5.8)</td><td>0.41</td><td class="grp">11</td><td>0.15</td><td>73%</td></tr>
+<tr><td></td><td>without</td><td><b>Base pipeline</b></td><td>147</td><td class="grp">-3.1 (9.5)</td><td>0.38</td><td class="grp">21</td><td>0.64</td><td>76%</td><td class="grp">-1 (56)</td><td>0.92</td><td class="grp">-4.3 (5.6)</td><td>0.44</td><td class="grp">4</td><td>0.39</td><td>75%</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>161</td><td class="grp">-3.1 (9.3)</td><td>0.43</td><td class="grp">23</td><td>0.74</td><td>78%</td><td class="grp">0 (55)</td><td>0.91</td><td class="grp">-3.0 (6.0)</td><td>0.40</td><td class="grp">9</td><td>0.04</td><td>89%</td></tr>
+<tr class=sep><td>stairs down</td><td>with</td><td><b>Base pipeline</b></td><td>104</td><td class="grp">1.6 (23.3)</td><td>0.27</td><td class="grp">10</td><td>0.19</td><td>50%</td><td class="grp">39 (174)</td><td>0.67</td><td class="grp">-1.6 (8.6)</td><td>0.12</td><td class="grp">3</td><td>0.99</td><td>67%</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>173</td><td class="grp">-1.8 (13.9)</td><td>0.30</td><td class="grp">26</td><td>0.47</td><td>58%</td><td class="grp">11 (137)</td><td>0.77</td><td class="grp">-3.1 (8.5)</td><td>0.11</td><td class="grp">6</td><td>0.67</td><td>83%</td></tr>
+<tr><td></td><td>without</td><td><b>Base pipeline</b></td><td>73</td><td class="grp">-1.7 (12.7)</td><td>0.41</td><td class="grp">3</td><td>-0.63</td><td>67%</td><td class="grp">13 (87)</td><td>0.86</td><td class="grp">-2.0 (6.5)</td><td>0.40</td><td class="grp">0</td><td>–</td><td>–</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td>109</td><td class="grp">-3.7 (11.7)</td><td>0.38</td><td class="grp">11</td><td>0.36</td><td>64%</td><td class="grp">2 (102)</td><td>0.80</td><td class="grp">-3.5 (7.4)</td><td>0.34</td><td class="grp">0</td><td>–</td><td>–</td></tr>
+</tbody></table></div>
+<p class="cap">WMCG references: stride length, stride time, step distance and step period = the markers (midpoint of the heel and first-metatarsal markers at the reference heel strikes, horizontal); step width = Visual3D stride width of the same stride (the other foot’s distance from the stride line); stance and swing time = Visual3D. The level parts of the stair trials are not included.</p>
+<h4>WMCG: mediolateral margin of stability</h4>
+<div class="tw"><table class="ev"><thead><tr><th rowspan="2">walking type</th><th rowspan="2">turns</th><th rowspan="2">pipeline</th><th colspan="2" class="grp">proxy, CoM-velocity heading: r</th><th colspan="2" class="grp">proxy, VAF: r</th></tr><tr><th class="grp">at IC</th><th>at mid-stance</th><th class="grp">at IC</th><th>at mid-stance</th></tr></thead><tbody>
+<tr class=sep><td>level walking</td><td>with</td><td><b>Base pipeline</b></td><td class=grp>-0.43</td><td>-0.44</td><td class=grp>-0.44</td><td>-0.29</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.41</td><td>-0.44</td><td class=grp>-0.45</td><td>-0.30</td></tr>
+<tr><td></td><td>without</td><td><b>Base pipeline</b></td><td class=grp>-0.47</td><td>-0.43</td><td class=grp>-0.41</td><td>-0.23</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.40</td><td>-0.43</td><td class=grp>-0.41</td><td>-0.24</td></tr>
+<tr class=sep><td>stairs up</td><td>with</td><td><b>Base pipeline</b></td><td class=grp>-0.01</td><td>0.08</td><td class=grp>-0.28</td><td>-0.20</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.03</td><td>0.09</td><td class=grp>-0.32</td><td>-0.19</td></tr>
+<tr><td></td><td>without</td><td><b>Base pipeline</b></td><td class=grp>0.01</td><td>0.10</td><td class=grp>-0.28</td><td>-0.20</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.02</td><td>0.10</td><td class=grp>-0.32</td><td>-0.19</td></tr>
+<tr class=sep><td>stairs down</td><td>with</td><td><b>Base pipeline</b></td><td class=grp>-0.22</td><td>-0.18</td><td class=grp>-0.56</td><td>-0.56</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.14</td><td>-0.14</td><td class=grp>-0.53</td><td>-0.49</td></tr>
+<tr><td></td><td>without</td><td><b>Base pipeline</b></td><td class=grp>-0.31</td><td>-0.24</td><td class=grp>-0.65</td><td>-0.62</td></tr>
+<tr><td></td><td></td><td><b>Modified pipeline</b></td><td class=grp>-0.31</td><td>-0.23</td><td class=grp>-0.58</td><td>-0.52</td></tr>
+</tbody></table></div>
+<h4>WearPD-Gait: walkway, per-recording means vs PKMAS</h4>
+<div class="tw"><table class="ev"><thead><tr><th>metric</th><th>pipeline</th><th>recordings</th><th>bias (SD)</th><th>r</th></tr></thead><tbody>
+<tr class=sep><td>stride length [cm]</td><td><b>Base pipeline</b></td><td>127</td><td>-16.0 (12.6)</td><td>0.86</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>127</td><td>-16.4 (12.4)</td><td>0.86</td></tr>
+<tr class=sep><td>stride time [s]</td><td><b>Base pipeline</b></td><td>127</td><td>0.076 (0.114)</td><td>0.82</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>127</td><td>0.040 (0.087)</td><td>0.87</td></tr>
+<tr class=sep><td>gait speed [cm/s]</td><td><b>Base pipeline</b></td><td>127</td><td>-19.0 (14.7)</td><td>0.90</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>127</td><td>-17.9 (14.8)</td><td>0.90</td></tr>
+<tr class=sep><td>step length [cm]</td><td><b>Base pipeline</b></td><td>127</td><td>-4.2 (6.0)</td><td>0.89</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>126</td><td>-4.6 (5.0)</td><td>0.92</td></tr>
+<tr class=sep><td>stride width [cm]</td><td><b>Base pipeline</b></td><td>127</td><td>-2.3 (8.8)</td><td>0.08</td></tr>
+<tr><td></td><td><b>Modified pipeline</b></td><td>126</td><td>-3.6 (5.0)</td><td>0.21</td></tr>
+</tbody></table></div>
+<p class="cap">Each recording’s mean is compared, as PKMAS reports summaries only. The IMU uses the strides on the Walk labels, PKMAS only those on the mat.</p>
 
 <h2 id="references">References</h2>
-<ol class="refs"><li value="1" id="ref-wgl">Castellaz, Wouda &amp; van Beijnum. <a href="https://doi.org/10.1109/TNSRE.2025.3622734">Estimating 3D Ground Reaction Forces During Daily Activities: A Reduced Sensor Setup and Virtual Pivot Point Approach</a>. <i>IEEE Transactions on Neural Systems and Rehabilitation Engineering 33 (2025)</i>.</li><li value="2" id="ref-newbee">Losing &amp; Hasenjäger. <a href="https://www.nature.com/articles/s41597-022-01580-3">A Multi-Modal Gait Database of Natural Everyday-Walk in an Urban Environment</a>. <i>Scientific Data 9, 473 (2022)</i>.</li><li value="3" id="ref-wmcg">Hossain et al. <a href="https://www.nature.com/articles/s41597-026-07657-7">A Wearable Motion Capture Dataset for Gait Analysis Using IMUs and Shank-Mounted Egocentric Cameras</a>. <i>Scientific Data 13, 1477 (2026)</i>.</li><li value="4" id="ref-wearpd">Anderson et al. <a href="https://www.nature.com/articles/s41597-026-06806-2">WearGait-PD: An Open-Access Wearables Dataset for Gait in Parkinson’s Disease and Age-Matched Controls</a>. <i>Scientific Data 13, 440 (2026)</i>.</li><li value="5" id="ref-bonci">Bonci et al. <a href="https://www.frontiersin.org/journals/bioengineering-and-biotechnology/articles/10.3389/fbioe.2022.868928/full">An Algorithm for Accurate Marker-Based Gait Event Detection in Healthy and Pathological Populations During Complex Motor Tasks</a>. <i>Frontiers in Bioengineering and Biotechnology 10, 868928 (2022)</i>.</li><li value="6" id="ref-baetens">Baetens, Turcksin, Loccufier, Chevalier &amp; Verstraten. <a href="https://plus.figshare.com/articles/dataset/Kinematic_kinetic_EMG_and_pressure_data_for_daily_life_locomotion_activities/30294658?file=67423086">Kinematic, kinetic, EMG and pressure data for daily life locomotion activities</a>. <i>Figshare+ (2026), dataset</i>.</li></ol>
+<ol class="refs"><li value="1" id="ref-wgl">Castellaz, Wouda &amp; van Beijnum. <a href="https://doi.org/10.1109/TNSRE.2025.3622734">Estimating 3D Ground Reaction Forces During Daily Activities: A Reduced Sensor Setup and Virtual Pivot Point Approach</a>. <i>IEEE Transactions on Neural Systems and Rehabilitation Engineering 33 (2025)</i>.</li><li value="2" id="ref-newbee">Losing &amp; Hasenjäger. <a href="https://www.nature.com/articles/s41597-022-01580-3">A Multi-Modal Gait Database of Natural Everyday-Walk in an Urban Environment</a>. <i>Scientific Data 9, 473 (2022)</i>.</li><li value="3" id="ref-wmcg">Hossain et al. <a href="https://www.nature.com/articles/s41597-026-07657-7">A Wearable Motion Capture Dataset for Gait Analysis Using IMUs and Shank-Mounted Egocentric Cameras</a>. <i>Scientific Data 13, 1477 (2026)</i>.</li><li value="4" id="ref-wearpd">Anderson et al. <a href="https://www.nature.com/articles/s41597-026-06806-2">WearGait-PD: An Open-Access Wearables Dataset for Gait in Parkinson’s Disease and Age-Matched Controls</a>. <i>Scientific Data 13, 440 (2026)</i>.</li><li value="5" id="ref-bonci">Bonci et al. <a href="https://www.frontiersin.org/journals/bioengineering-and-biotechnology/articles/10.3389/fbioe.2022.868928/full">An Algorithm for Accurate Marker-Based Gait Event Detection in Healthy and Pathological Populations During Complex Motor Tasks</a>. <i>Frontiers in Bioengineering and Biotechnology 10, 868928 (2022)</i>.</li><li value="6" id="ref-baetens">Baetens, Turcksin, Loccufier, Chevalier &amp; Verstraten. <a href="https://plus.figshare.com/articles/dataset/Kinematic_kinetic_EMG_and_pressure_data_for_daily_life_locomotion_activities/30294658?file=67423086">Kinematic, kinetic, EMG and pressure data for daily life locomotion activities</a>. <i>Figshare+ (2026), dataset</i>.</li><li value="7" id="ref-hasenjaeger">Hasenjäger &amp; Wiebel-Herboth. <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0334093#pone-0334093-t002">On utilizing gaze behavior to predict movement transitions during natural human walking on different terrains</a>. <i>PLoS ONE 20(10), e0334093 (2025)</i>.</li><li value="8" id="ref-fino">Fino, Horak &amp; Curtze. <a href="https://doi.org/10.1109/TNSRE.2020.2971905">Inertial Sensor-Based Centripetal Acceleration as a Correlate for Lateral Margin of Stability During Walking and Turning</a>. <i>IEEE Transactions on Neural Systems and Rehabilitation Engineering 28(3), 629–636 (2020)</i>.</li></ol>
 
 </main></body></html>
